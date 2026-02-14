@@ -6,22 +6,113 @@
   <title>VitalCore Admin</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    .admin-wrap{max-width:1100px;margin:40px auto;padding:0 16px;}
+    body{background: radial-gradient(1200px 600px at 20% 0%, rgba(39,174,96,.14), transparent 60%),
+                   radial-gradient(900px 500px at 90% 10%, rgba(230,126,34,.10), transparent 55%),
+                   var(--light);}
+
+    .admin-wrap{max-width:1180px;margin:34px auto;padding:0 16px;}
+
+    .admin-top{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+      margin-bottom:18px;
+    }
+    .admin-top h1{font-size:2.2rem; line-height:1.1; margin:0;}
+    .admin-sub{margin-top:6px; color:var(--text-light); max-width:70ch}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background:rgba(39,174,96,.10);
+      border:1px solid rgba(39,174,96,.20);
+      color:var(--secondary);
+      font-weight:700;
+      font-size:.95rem;
+      white-space:nowrap;
+    }
+    .pill .dot{width:10px;height:10px;border-radius:50%;background:var(--primary); box-shadow:0 0 0 4px rgba(39,174,96,.18)}
+
     .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-    textarea,input,select{width:100%;padding:10px;border:1px solid rgba(255,255,255,.12);background:#0f141d;color:#e8eefc;border-radius:10px;}
+
+    .admin-card{
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(17,24,39,.10);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(135deg, rgba(39,174,96,.25), rgba(230,126,34,.18), rgba(26,26,46,.10));
+      opacity:.22;
+      pointer-events:none;
+    }
+
+    .admin-card > *{position:relative; z-index:1;}
+
+    .admin-card h2{margin:0 0 10px 0; font-size:1.55rem;}
+    .admin-card .muted{color:var(--text-light)}
+
+    label{display:block; margin-top:10px; font-weight:700; color:var(--secondary);}
+
+    textarea,input,select{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid rgba(17,24,39,.12);
+      background:#ffffff;
+      color:var(--text);
+      border-radius:14px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+      outline:none;
+    }
+
+    textarea:focus,input:focus,select:focus{
+      border-color: rgba(39,174,96,.55);
+      box-shadow: 0 0 0 4px rgba(39,174,96,.14);
+    }
+
     textarea{min-height:120px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;}
-    .admin-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;}
+
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .muted{opacity:.75;font-size:.95rem}
-    .list{margin-top:10px}
-    .list code{font-size:.9rem}
+
+    .actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
     .btn{cursor:pointer}
+
+    pre.list{
+      margin-top:12px;
+      background: #0f141d;
+      color:#e8eefc;
+      border-radius:14px;
+      padding:12px;
+      overflow:auto;
+      border:1px solid rgba(17,24,39,.18);
+      min-height: 70px;
+    }
+
+    .foot{margin-top:18px; color:var(--text-light); font-size:.95rem}
+    code{background:rgba(17,24,39,.06); padding:2px 6px; border-radius:8px;}
+
+    @media (max-width: 980px){
+      .admin-grid{grid-template-columns:1fr;}
+      .admin-top{align-items:flex-start; flex-direction:column;}
+    }
   </style>
 </head>
 <body>
   <div class="admin-wrap">
-    <h1>VitalCore Admin</h1>
-    <p class="muted">Protected by Cloudflare Access. This page talks to the API and lets you add products / posts without redeploy.</p>
+    <div class="admin-top">
+      <div>
+        <h1>VitalCore Admin</h1>
+        <p class="admin-sub">Protected by Cloudflare Access. Add products and blog entries without redeploying the site.</p>
+      </div>
+      <div class="pill" title="Cloudflare Access">
+        <span class="dot"></span>
+        Access protected
+      </div>
+    </div>
 
     <div class="admin-grid">
       <section class="admin-card">
@@ -54,11 +145,11 @@
         <input id="p_img" placeholder="https://images.pexels.com/photos/..." />
         <label>Affiliate URL</label>
         <input id="p_aff" placeholder="https://...#aff=ClawDave" />
-        <div class="row">
+        <div class="actions">
           <button class="btn btn-primary" id="btn_add_product">Add product</button>
           <button class="btn btn-secondary" id="btn_load_products">Load products</button>
         </div>
-        <pre class="list" id="products_out"></pre>
+        <pre class="list" id="products_out">Ready.</pre>
       </section>
 
       <section class="admin-card">
@@ -84,15 +175,15 @@
         <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
         <label>Content HTML (optional)</label>
         <textarea id="b_html" placeholder="<p>...</p>"></textarea>
-        <div class="row">
+        <div class="actions">
           <button class="btn btn-primary" id="btn_add_post">Add post</button>
           <button class="btn btn-secondary" id="btn_load_posts">Load posts</button>
         </div>
-        <pre class="list" id="posts_out"></pre>
+        <pre class="list" id="posts_out">Ready.</pre>
       </section>
     </div>
 
-    <p class="muted" style="margin-top:18px">API base URL: <code id="api_base"></code></p>
+    <p class="foot">API base URL: <code id="api_base"></code></p>
   </div>
 
 <script>
