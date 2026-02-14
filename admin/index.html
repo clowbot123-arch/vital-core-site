@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VitalCore Admin</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .admin-wrap{max-width:1100px;margin:40px auto;padding:0 16px;}
+    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    textarea,input,select{width:100%;padding:10px;border:1px solid rgba(255,255,255,.12);background:#0f141d;color:#e8eefc;border-radius:10px;}
+    textarea{min-height:120px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;}
+    .admin-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .muted{opacity:.75;font-size:.95rem}
+    .list{margin-top:10px}
+    .list code{font-size:.9rem}
+    .btn{cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+    <h1>VitalCore Admin</h1>
+    <p class="muted">Protected by Cloudflare Access. This page talks to the API and lets you add products / posts without redeploy.</p>
+
+    <div class="admin-grid">
+      <section class="admin-card">
+        <h2>Add product</h2>
+        <div class="row">
+          <div>
+            <label>Lang</label>
+            <select id="p_lang"><option value="en">en</option><option value="de">de</option></select>
+          </div>
+          <div>
+            <label>Slug</label>
+            <input id="p_slug" placeholder="advanced-amino" />
+          </div>
+        </div>
+        <label>Title</label>
+        <input id="p_title" placeholder="Advanced Amino Acid Complex" />
+        <label>Tag</label>
+        <input id="p_tag" placeholder="Recovery" />
+        <label>Description</label>
+        <textarea id="p_desc" placeholder="Short description..."></textarea>
+        <label>Bullets (one per line)</label>
+        <textarea id="p_bullets" placeholder="Bullet 1\nBullet 2\nBullet 3"></textarea>
+        <div class="row">
+          <div><label>Old price</label><input id="p_old" placeholder="€108.80" /></div>
+          <div><label>New price</label><input id="p_new" placeholder="€39.95" /></div>
+        </div>
+        <label>Price unit (optional)</label>
+        <input id="p_unit" placeholder="/ bottle" />
+        <label>Pexels image URL</label>
+        <input id="p_img" placeholder="https://images.pexels.com/photos/..." />
+        <label>Affiliate URL</label>
+        <input id="p_aff" placeholder="https://...#aff=ClawDave" />
+        <div class="row">
+          <button class="btn btn-primary" id="btn_add_product">Add product</button>
+          <button class="btn btn-secondary" id="btn_load_products">Load products</button>
+        </div>
+        <pre class="list" id="products_out"></pre>
+      </section>
+
+      <section class="admin-card">
+        <h2>Add blog post (index entry)</h2>
+        <p class="muted">This stores the post in DB. You can later decide if full articles should be dynamic or stay static.</p>
+        <div class="row">
+          <div>
+            <label>Lang</label>
+            <select id="b_lang"><option value="en">en</option><option value="de">de</option></select>
+          </div>
+          <div>
+            <label>Slug</label>
+            <input id="b_slug" placeholder="sleep-optimization" />
+          </div>
+        </div>
+        <label>Title</label>
+        <input id="b_title" placeholder="Sleep Optimization: The Ultimate Guide" />
+        <label>Category</label>
+        <input id="b_cat" placeholder="Sleep" />
+        <label>Excerpt</label>
+        <textarea id="b_excerpt" placeholder="Short excerpt..."></textarea>
+        <label>Hero image URL (Pexels)</label>
+        <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
+        <label>Content HTML (optional)</label>
+        <textarea id="b_html" placeholder="<p>...</p>"></textarea>
+        <div class="row">
+          <button class="btn btn-primary" id="btn_add_post">Add post</button>
+          <button class="btn btn-secondary" id="btn_load_posts">Load posts</button>
+        </div>
+        <pre class="list" id="posts_out"></pre>
+      </section>
+    </div>
+
+    <p class="muted" style="margin-top:18px">API base URL: <code id="api_base"></code></p>
+  </div>
+
+<script>
+  // If you route the Worker under the same domain, set API_BASE to "/api".
+  const API_BASE = "https://api.vital-core.site";
+  document.getElementById('api_base').textContent = API_BASE;
+
+  const j = (id) => document.getElementById(id);
+
+  function bulletsToArray(s){
+    return (s||"").split("\n").map(x=>x.trim()).filter(Boolean);
+  }
+
+  async function api(path, opts={}){
+    const res = await fetch(API_BASE + path, {
+      ...opts,
+      headers: {
+        "content-type": "application/json",
+        ...(opts.headers||{})
+      }
+    });
+    const txt = await res.text();
+    let data;
+    try{ data = JSON.parse(txt); } catch(e){ data = { raw: txt }; }
+    if(!res.ok) throw new Error((data && data.error) ? data.error : ("HTTP " + res.status));
+    return data;
+  }
+
+  j('btn_add_product').onclick = async () => {
+    try{
+      const payload = {
+        lang: j('p_lang').value,
+        slug: j('p_slug').value,
+        title: j('p_title').value,
+        tag: j('p_tag').value,
+        description: j('p_desc').value,
+        bullets: bulletsToArray(j('p_bullets').value),
+        price_old: j('p_old').value,
+        price_new: j('p_new').value,
+        price_unit: j('p_unit').value,
+        image_url: j('p_img').value,
+        affiliate_url: j('p_aff').value,
+        featured: false,
+        active: true,
+      };
+      const out = await api('/products', { method: 'POST', body: JSON.stringify(payload) });
+      j('products_out').textContent = JSON.stringify(out, null, 2);
+    } catch(e){ j('products_out').textContent = String(e); }
+  };
+
+  j('btn_load_products').onclick = async () => {
+    try{
+      const lang = j('p_lang').value;
+      const out = await api('/products?lang=' + encodeURIComponent(lang));
+      j('products_out').textContent = JSON.stringify(out, null, 2);
+    } catch(e){ j('products_out').textContent = String(e); }
+  };
+
+  j('btn_add_post').onclick = async () => {
+    try{
+      const payload = {
+        lang: j('b_lang').value,
+        slug: j('b_slug').value,
+        title: j('b_title').value,
+        category: j('b_cat').value,
+        excerpt: j('b_excerpt').value,
+        hero_image_url: j('b_img').value,
+        content_html: j('b_html').value,
+        active: true,
+      };
+      const out = await api('/posts', { method: 'POST', body: JSON.stringify(payload) });
+      j('posts_out').textContent = JSON.stringify(out, null, 2);
+    } catch(e){ j('posts_out').textContent = String(e); }
+  };
+
+  j('btn_load_posts').onclick = async () => {
+    try{
+      const lang = j('b_lang').value;
+      const out = await api('/posts?lang=' + encodeURIComponent(lang));
+      j('posts_out').textContent = JSON.stringify(out, null, 2);
+    } catch(e){ j('posts_out').textContent = String(e); }
+  };
+</script>
+</body>
+</html>
