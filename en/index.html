@@ -24,11 +24,15 @@
         </div>
     </nav>
 
-    <header class="hero">
+    <header class="hero" style="--hero-image:url('https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg');">
         <div class="container">
             <h1>Practical health for adults 40+</h1>
             <p class="subtitle">Science-based training, nutrition, sleep, and recipes you can actually stick with.</p>
-            <a href="/en/blog/index.html" class="btn btn-primary">Read the blog</a>
+            <div class="hero-actions">
+                <a href="#products" class="btn btn-primary">See top products</a>
+                <a href="/en/blog/index.html" class="btn btn-secondary">Read the blog</a>
+            </div>
+            <p class="hero-note">Transparency: Some links are affiliate links. Your price stays the same.</p>
         </div>
     </header>
 
@@ -52,24 +56,110 @@
         </div>
     </section>
 
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-head">
+                <h2>Top recommendations</h2>
+                <p>Three proven picks. Choose the one that matches your goal.</p>
+            </div>
+
+            <div class="product-grid">
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg" alt="MenoPower Abs TOTAL" loading="lazy">
+                    </div>
+                    <div class="product-body">
+                        <div class="product-tag">Women 40+</div>
+                        <h3>MenoPower Abs TOTAL</h3>
+                        <p class="product-desc">A simple home ab plan (5–10 minutes/day) designed for consistency, posture, and a stronger core.</p>
+                        <ul class="product-bullets">
+                            <li>Strong abs and core stability</li>
+                            <li>Better posture and less back discomfort</li>
+                            <li>Short sessions that actually fit real life</li>
+                        </ul>
+                        <div class="product-price">
+                            <span class="old">€35</span>
+                            <span class="new">€29</span>
+                        </div>
+                        <a class="btn btn-primary btn-wide" href="https://pilates4life.lpages.co/menopower-bauch-total/#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">View product</a>
+                    </div>
+                </article>
+
+                <article class="product-card featured">
+                    <div class="product-image">
+                        <img src="https://images.pexels.com/photos/3762875/pexels-photo-3762875.jpeg" alt="Advanced Amino Acid Complex" loading="lazy">
+                    </div>
+                    <div class="product-body">
+                        <div class="product-tag">Recovery</div>
+                        <h3>Advanced Amino Acid Complex</h3>
+                        <p class="product-desc">A premium amino acid formula for people who train (or want to keep muscle while dieting) and want better recovery.</p>
+                        <ul class="product-bullets">
+                            <li>Supports recovery and training consistency</li>
+                            <li>Helps preserve lean mass during stress or dieting</li>
+                            <li>Simple daily routine</li>
+                        </ul>
+                        <div class="product-price">
+                            <span class="old">€108.80</span>
+                            <span class="new">€39.95</span>
+                        </div>
+                        <a class="btn btn-primary btn-wide" href="https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">View product</a>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.pexels.com/photos/3772509/pexels-photo-3772509.jpeg" alt="EndoPeak Vitality Formula" loading="lazy">
+                    </div>
+                    <div class="product-body">
+                        <div class="product-tag">Men 40+</div>
+                        <h3>EndoPeak Vitality Formula</h3>
+                        <p class="product-desc">A focused pick for men who want better day-to-day energy, stamina, and vitality support.</p>
+                        <ul class="product-bullets">
+                            <li>Natural energy support</li>
+                            <li>Endurance and vitality focus</li>
+                            <li>Easy to use</li>
+                        </ul>
+                        <div class="product-price">
+                            <span class="old">€159.37</span>
+                            <span class="new">€69</span>
+                            <span class="per">/ bottle</span>
+                        </div>
+                        <a class="btn btn-primary btn-wide" href="https://endopeak24.com/d/order-now.php#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">View product</a>
+                    </div>
+                </article>
+            </div>
+
+            <p class="disclosure">Disclosure: Links above are affiliate links. We may earn a commission. There is no extra cost to you.</p>
+        </div>
+    </section>
+
     <section class="latest-posts">
         <div class="container">
             <h2>Latest articles</h2>
             <div class="posts-grid">
                 <article class="post-card">
-                    <h3><a href="/en/blog/muscle-building-over-40.html">Building Muscle After 40: What Really Works</a></h3>
-                    <p>A realistic training + recovery approach that keeps you progressing.</p>
-                    <a href="/en/blog/muscle-building-over-40.html" class="read-more">Read more →</a>
+                    <div class="post-content">
+                        <span class="post-category">Muscle</span>
+                        <h3><a href="/en/blog/muscle-building-over-40.html">Building Muscle After 40: What Really Works</a></h3>
+                        <p>A realistic training + recovery approach that keeps you progressing.</p>
+                        <div class="post-meta"><span>Guide</span><span class="read-more">Read →</span></div>
+                    </div>
                 </article>
                 <article class="post-card">
-                    <h3><a href="/en/blog/energy-boosting-foods.html">10 Foods That Boost Your Energy Naturally</a></h3>
-                    <p>Stable energy without living on caffeine.</p>
-                    <a href="/en/blog/energy-boosting-foods.html" class="read-more">Read more →</a>
+                    <div class="post-content">
+                        <span class="post-category">Energy</span>
+                        <h3><a href="/en/blog/energy-boosting-foods.html">10 Foods That Boost Your Energy Naturally</a></h3>
+                        <p>Stable energy without living on caffeine.</p>
+                        <div class="post-meta"><span>Guide</span><span class="read-more">Read →</span></div>
+                    </div>
                 </article>
                 <article class="post-card">
-                    <h3><a href="/en/blog/sleep-optimization.html">Sleep Optimization: The Ultimate Guide</a></h3>
-                    <p>Simple changes that improve sleep quality and recovery.</p>
-                    <a href="/en/blog/sleep-optimization.html" class="read-more">Read more →</a>
+                    <div class="post-content">
+                        <span class="post-category">Sleep</span>
+                        <h3><a href="/en/blog/sleep-optimization.html">Sleep Optimization: The Ultimate Guide</a></h3>
+                        <p>Simple changes that improve sleep quality and recovery.</p>
+                        <div class="post-meta"><span>Guide</span><span class="read-more">Read →</span></div>
+                    </div>
                 </article>
             </div>
             <a href="/en/blog/index.html" class="btn btn-secondary">View all posts</a>
@@ -101,44 +191,7 @@
         </div>
     </section>
 
-
-    <section class="latest-posts" id="products">
-        <div class="container">
-            <h2>Recommended products</h2>
-            <p style="text-align:center; color: var(--text-light); margin-bottom: 30px;">Curated affiliate recommendations. No extra cost for you.</p>
-            <div class="posts-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
-                <article class="post-card">
-                    <div class="post-image"><img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg" alt="MenoPower" loading="lazy"></div>
-                    <div class="post-content">
-                        <span class="post-category">Women 40+</span>
-                        <h3><a href="https://pilates4life.lpages.co/menopower-bauch-total/#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">MenoPower Abs TOTAL</a></h3>
-                        <p>Home ab program (5–10 minutes/day). Strong core, better posture, less back pain.</p>
-                        <div class="post-meta"><span><s>€35</s> <strong style="color:var(--primary-dark)">€29</strong></span><span class="read-more">View →</span></div>
-                    </div>
-                </article>
-
-                <article class="post-card">
-                    <div class="post-image"><img src="https://images.pexels.com/photos/3762875/pexels-photo-3762875.jpeg" alt="Advanced Amino" loading="lazy"></div>
-                    <div class="post-content">
-                        <span class="post-category">Recovery</span>
-                        <h3><a href="https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">Advanced Amino Acid Complex</a></h3>
-                        <p>Premium amino acids to support recovery, energy, and muscle preservation.</p>
-                        <div class="post-meta"><span><s>€108.80</s> <strong style="color:var(--primary-dark)">€39.95</strong></span><span class="read-more">View →</span></div>
-                    </div>
-                </article>
-
-                <article class="post-card">
-                    <div class="post-image"><img src="https://images.pexels.com/photos/3772509/pexels-photo-3772509.jpeg" alt="EndoPeak" loading="lazy"></div>
-                    <div class="post-content">
-                        <span class="post-category">Men 40+</span>
-                        <h3><a href="https://endopeak24.com/d/order-now.php#aff=ClawDave" target="_blank" rel="nofollow sponsored noopener">EndoPeak Vitality Formula</a></h3>
-                        <p>Support natural energy, endurance, and vitality for men over 40.</p>
-                        <div class="post-meta"><span><s>€159.37</s> <strong style="color:var(--primary-dark)">€69</strong> / bottle</span><span class="read-more">View →</span></div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
+    
 
     <section class="newsletter">
         <div class="container">

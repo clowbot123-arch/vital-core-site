@@ -532,3 +532,41 @@ footer p:last-child {
     margin-bottom: 15px;
     padding-left: 10px;
 }
+
+
+/* Products section */
+
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+.hero-note{margin-top:14px;opacity:0.85;font-size:0.95rem;}
+
+.section-head{text-align:center;margin-bottom:35px;}
+.section-head p{color:var(--text-light);max-width:720px;margin:10px auto 0;}
+
+.products-section{padding:90px 0;background:var(--white);}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px;align-items:stretch;}
+.product-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:2px solid #eef2f7;transition:all .35s;display:flex;flex-direction:column;}
+.product-card:hover{transform:translateY(-8px);box-shadow:0 18px 45px rgba(0,0,0,0.12);border-color:rgba(39,174,96,.28);}
+.product-card.featured{border-color:rgba(39,174,96,.55);box-shadow:0 18px 55px rgba(39,174,96,0.16);}
+.product-image{height:220px;background:#e5e7eb;}
+.product-image img{width:100%;height:100%;object-fit:cover;}
+.product-body{padding:26px;display:flex;flex-direction:column;gap:12px;flex:1;}
+.product-tag{display:inline-flex;align-self:flex-start;background:#ecfdf5;color:var(--primary-dark);padding:6px 12px;border-radius:999px;font-weight:700;font-size:.8rem;}
+.product-desc{color:var(--text-light);}
+.product-bullets{list-style:none;margin:6px 0 0;padding:0;}
+.product-bullets li{padding:7px 0;border-bottom:1px solid #eef2f7;color:#374151;}
+.product-bullets li:last-child{border-bottom:none;}
+.product-bullets li::before{content:'✓';color:var(--primary);font-weight:800;margin-right:10px;}
+.product-price{margin-top:auto;display:flex;align-items:baseline;gap:10px;}
+.product-price .old{text-decoration:line-through;color:#9ca3af;font-weight:600;}
+.product-price .new{color:var(--primary-dark);font-size:1.6rem;font-weight:800;}
+.product-price .per{color:var(--text-light);font-size:.95rem;}
+.btn-wide{width:100%;text-align:center;padding:14px 22px;}
+.disclosure{margin-top:20px;color:var(--text-light);font-size:0.95rem;text-align:center;}
+
+/* Improve typography spacing on cards */
+.product-card h3{font-family:'Playfair Display',serif;font-size:1.35rem;line-height:1.25;margin:0;}
+
+@media (max-width: 768px){
+  .products-section{padding:70px 0;}
+  .product-image{height:200px;}
+}
