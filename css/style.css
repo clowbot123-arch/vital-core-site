@@ -333,25 +333,102 @@ h1, h2, h3 {
 
 .recipe-card {
     background: var(--white);
-    padding: 25px;
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    display: flex;
+    flex-direction: column;
 }
 
+.recipe-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+    border-color: rgba(39, 174, 96, 0.22);
+}
+
+/* Home preview style */
+.recipe-thumb {
+    height: 160px;
+    background: #e5e7eb;
+}
+
+.recipe-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-body {
+    padding: 22px;
+}
+
+/* Recipes list / category pages */
+.recipe-image {
+    height: 190px;
+    background: #e5e7eb;
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-content {
+    padding: 22px;
+}
+
+.recipe-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    background: #ecfdf5;
+    color: var(--primary-dark);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+}
+
+.recipe-meta {
+    display: flex;
+    gap: 10px 14px;
+    flex-wrap: wrap;
+    margin: 10px 0 14px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.recipe-meta span {
+    background: rgba(17, 24, 39, 0.03);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 999px;
+}
+
+.recipe-content h3,
 .recipe-card h4 {
-    color: var(--primary);
-    margin-bottom: 10px;
+    color: var(--secondary);
+    margin: 0 0 10px;
+    font-size: 1.15rem;
+    line-height: 1.25;
+}
+
+.recipe-content h3 {
+    font-size: 1.25rem;
 }
 
 .recipe-card p {
     color: var(--text-light);
-    margin-bottom: 15px;
+    margin-bottom: 14px;
 }
 
 .recipe-card a {
-    color: var(--secondary);
+    color: var(--primary-dark);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .recipe-card a:hover {
