@@ -6,193 +6,408 @@
   <title>VitalCore Admin</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    body{background: radial-gradient(1200px 600px at 20% 0%, rgba(39,174,96,.14), transparent 60%),
-                   radial-gradient(900px 500px at 90% 10%, rgba(230,126,34,.10), transparent 55%),
-                   var(--light);}
-
-    .admin-wrap{max-width:1180px;margin:34px auto;padding:0 16px;}
-
-    .admin-top{
-      display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
-      margin-bottom:18px;
+    :root{
+      --panel:#ffffff;
+      --panel2:rgba(255,255,255,.72);
+      --border:rgba(17,24,39,.10);
+      --shadow2: 0 18px 55px rgba(0,0,0,.10);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
-    .admin-top h1{font-size:2.2rem; line-height:1.1; margin:0;}
-    .admin-sub{margin-top:6px; color:var(--text-light); max-width:70ch}
+
+    body{
+      background:
+        radial-gradient(1200px 650px at 15% -10%, rgba(39,174,96,.20), transparent 60%),
+        radial-gradient(900px 520px at 90% 10%, rgba(230,126,34,.14), transparent 55%),
+        radial-gradient(900px 520px at 40% 110%, rgba(26,26,46,.12), transparent 55%),
+        var(--light);
+    }
+
+    .wrap{max-width:1260px;margin:26px auto;padding:0 16px;}
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:14px 16px;
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+
+    .brand .mark{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(39,174,96,.95), rgba(30,132,73,.95));
+      box-shadow: 0 10px 28px rgba(39,174,96,.25);
+    }
+
+    .brand h1{margin:0;font-size:1.45rem;line-height:1.1;}
+    .brand p{margin:2px 0 0 0; color:var(--text-light); font-weight:600; font-size:.95rem}
+
+    .status{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 12px; border-radius:999px;
-      background:rgba(39,174,96,.10);
-      border:1px solid rgba(39,174,96,.20);
-      color:var(--secondary);
-      font-weight:700;
+      background: rgba(39,174,96,.10);
+      border: 1px solid rgba(39,174,96,.22);
+      color: var(--secondary);
+      font-weight:800;
       font-size:.95rem;
       white-space:nowrap;
     }
+    .pill.warn{background:rgba(230,126,34,.10);border-color:rgba(230,126,34,.22)}
     .pill .dot{width:10px;height:10px;border-radius:50%;background:var(--primary); box-shadow:0 0 0 4px rgba(39,174,96,.18)}
+    .pill.warn .dot{background:var(--accent); box-shadow:0 0 0 4px rgba(230,126,34,.18)}
 
-    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .layout{display:grid;grid-template-columns: 320px 1fr;gap:16px;margin-top:16px;align-items:start;}
 
-    .admin-card{
-      background: rgba(255,255,255,.86);
-      border: 1px solid rgba(17,24,39,.10);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 14px 40px rgba(0,0,0,.08);
-      position: relative;
-      overflow: hidden;
+    .sidebar,.panel{
+      background:var(--panel2);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
     }
 
-    .admin-card::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: linear-gradient(135deg, rgba(39,174,96,.25), rgba(230,126,34,.18), rgba(26,26,46,.10));
-      opacity:.22;
-      pointer-events:none;
+    .sidebar{padding:14px;}
+
+    .navbtn{
+      width:100%;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid transparent;
+      background:transparent;
+      cursor:pointer;
+      font-weight:900;
+      color:var(--secondary);
+    }
+    .navbtn small{color:var(--text-light); font-weight:800}
+    .navbtn.active{
+      background:rgba(39,174,96,.10);
+      border-color:rgba(39,174,96,.20);
     }
 
-    .admin-card > *{position:relative; z-index:1;}
+    .sidebar .hint{margin-top:10px;color:var(--text-light);font-weight:600;font-size:.95rem;line-height:1.5}
+    .sidebar code{font-family:var(--mono);font-size:.92rem}
 
-    .admin-card h2{margin:0 0 10px 0; font-size:1.55rem;}
-    .admin-card .muted{color:var(--text-light)}
+    .panel{padding:16px;}
 
-    label{display:block; margin-top:10px; font-weight:700; color:var(--secondary);}
+    .panelhead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px;}
+    .panelhead h2{margin:0;font-size:1.65rem}
+    .panelhead .sub{margin:0;color:var(--text-light);font-weight:600;max-width:70ch}
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+    label{display:block;margin-top:10px;font-weight:900;color:var(--secondary);}
 
     textarea,input,select{
       width:100%;
       padding:12px 12px;
       border:1px solid rgba(17,24,39,.12);
-      background:#ffffff;
+      background:#fff;
       color:var(--text);
-      border-radius:14px;
-      box-shadow: 0 1px 0 rgba(0,0,0,.02);
+      border-radius:16px;
       outline:none;
     }
+    textarea{min-height:110px;font-family:var(--mono)}
 
     textarea:focus,input:focus,select:focus{
       border-color: rgba(39,174,96,.55);
       box-shadow: 0 0 0 4px rgba(39,174,96,.14);
     }
 
-    textarea{min-height:120px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;}
+    .actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .btn.small{padding:10px 14px;border-radius:14px;font-weight:900}
+    .btn-danger{background:#b42318;color:#fff}
+    .btn-danger:hover{filter:brightness(.95);transform:translateY(-2px)}
 
-    .actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
-    .btn{cursor:pointer}
+    .split{display:grid;grid-template-columns: 1.15fr .85fr;gap:14px;}
 
-    pre.list{
-      margin-top:12px;
-      background: #0f141d;
-      color:#e8eefc;
-      border-radius:14px;
-      padding:12px;
-      overflow:auto;
-      border:1px solid rgba(17,24,39,.18);
-      min-height: 70px;
+    .card{
+      background: rgba(255,255,255,.88);
+      border:1px solid rgba(17,24,39,.10);
+      border-radius:22px;
+      padding:14px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.06);
     }
 
-    .foot{margin-top:18px; color:var(--text-light); font-size:.95rem}
-    code{background:rgba(17,24,39,.06); padding:2px 6px; border-radius:8px;}
+    .tablewrap{margin-top:12px}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    th{font-size:.85rem;letter-spacing:.02em;text-transform:uppercase;color:var(--text-light);text-align:left;padding:0 10px}
+    td{padding:12px 10px;background:#fff;border-top:1px solid rgba(17,24,39,.06);border-bottom:1px solid rgba(17,24,39,.06)}
+    tr td:first-child{border-left:1px solid rgba(17,24,39,.06);border-top-left-radius:16px;border-bottom-left-radius:16px}
+    tr td:last-child{border-right:1px solid rgba(17,24,39,.06);border-top-right-radius:16px;border-bottom-right-radius:16px}
+    .rowbtn{padding:8px 10px;border-radius:12px;border:1px solid rgba(17,24,39,.10);background:rgba(17,24,39,.02);font-weight:900;cursor:pointer}
+    .rowbtn:hover{background:rgba(39,174,96,.10);border-color:rgba(39,174,96,.20)}
 
-    @media (max-width: 980px){
-      .admin-grid{grid-template-columns:1fr;}
-      .admin-top{align-items:flex-start; flex-direction:column;}
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      max-width: 420px;
+      background: rgba(17,24,39,.92);
+      color: #e8eefc;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      padding: 12px 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      display:none;
+      z-index: 9999;
+    }
+    .toast.show{display:block}
+    .toast .t{font-weight:900}
+    .toast .m{opacity:.9;margin-top:4px;white-space:pre-wrap;font-family:var(--mono);font-size:.9rem}
+
+    .muted{color:var(--text-light);font-weight:600}
+
+    @media (max-width: 1050px){
+      .layout{grid-template-columns:1fr}
+      .split{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
-  <div class="admin-wrap">
-    <div class="admin-top">
-      <div>
-        <h1>VitalCore Admin</h1>
-        <p class="admin-sub">Protected by Cloudflare Access. Add products and blog entries without redeploying the site.</p>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>VitalCore Admin</h1>
+          <p>Products + Blog — edit without redeploy</p>
+        </div>
       </div>
-      <div class="pill" title="Cloudflare Access">
-        <span class="dot"></span>
-        Access protected
+      <div class="status">
+        <span class="pill"><span class="dot"></span>Access protected</span>
+        <span class="pill warn">API: <code id="api_base"></code></span>
       </div>
     </div>
 
-    <div class="admin-grid">
-      <section class="admin-card">
-        <h2>Add product</h2>
-        <div class="row">
-          <div>
-            <label>Lang</label>
-            <select id="p_lang"><option value="en">en</option><option value="de">de</option></select>
-          </div>
-          <div>
-            <label>Slug</label>
-            <input id="p_slug" placeholder="advanced-amino" />
-          </div>
-        </div>
-        <label>Title</label>
-        <input id="p_title" placeholder="Advanced Amino Acid Complex" />
-        <label>Tag</label>
-        <input id="p_tag" placeholder="Recovery" />
-        <label>Description</label>
-        <textarea id="p_desc" placeholder="Short description..."></textarea>
-        <label>Bullets (one per line)</label>
-        <textarea id="p_bullets" placeholder="Bullet 1\nBullet 2\nBullet 3"></textarea>
-        <div class="row">
-          <div><label>Old price</label><input id="p_old" placeholder="€108.80" /></div>
-          <div><label>New price</label><input id="p_new" placeholder="€39.95" /></div>
-        </div>
-        <label>Price unit (optional)</label>
-        <input id="p_unit" placeholder="/ bottle" />
-        <label>Pexels image URL</label>
-        <input id="p_img" placeholder="https://images.pexels.com/photos/..." />
-        <label>Affiliate URL</label>
-        <input id="p_aff" placeholder="https://...#aff=ClawDave" />
-        <div class="actions">
-          <button class="btn btn-primary" id="btn_add_product">Add product</button>
-          <button class="btn btn-secondary" id="btn_load_products">Load products</button>
-        </div>
-        <pre class="list" id="products_out">Ready.</pre>
-      </section>
+    <div class="layout">
+      <aside class="sidebar">
+        <button class="navbtn active" data-view="products">Products <small id="count_products">0</small></button>
+        <button class="navbtn" data-view="posts">Blog posts <small id="count_posts">0</small></button>
 
-      <section class="admin-card">
-        <h2>Add blog post (index entry)</h2>
-        <p class="muted">This stores the post in DB. You can later decide if full articles should be dynamic or stay static.</p>
-        <div class="row">
-          <div>
-            <label>Lang</label>
-            <select id="b_lang"><option value="en">en</option><option value="de">de</option></select>
+        <p class="hint">Local testing uses the built-in API at <code>/api</code> via <code>dev_server.py</code>. Production will put Cloudflare Access in front.</p>
+      </aside>
+
+      <main class="panel">
+        <!-- PRODUCTS VIEW -->
+        <section id="view_products">
+          <div class="panelhead">
+            <div>
+              <h2>Products</h2>
+              <p class="sub">Create, edit and deactivate affiliate products. Changes go live instantly (once API is deployed).</p>
+            </div>
+            <div class="toolbar">
+              <select id="p_lang" aria-label="language">
+                <option value="en">en</option>
+                <option value="de">de</option>
+              </select>
+              <button class="btn btn-secondary small" id="btn_load_products">Refresh list</button>
+              <button class="btn btn-primary small" id="btn_new_product">New product</button>
+            </div>
           </div>
-          <div>
-            <label>Slug</label>
-            <input id="b_slug" placeholder="sleep-optimization" />
+
+          <div class="split">
+            <div class="card">
+              <h3 style="margin:0 0 6px 0">Editor</h3>
+              <p class="muted" style="margin:0 0 8px 0">Fill the fields and press Save.</p>
+
+              <input type="hidden" id="p_id" value="" />
+
+              <div class="grid2">
+                <div>
+                  <label>Slug</label>
+                  <input id="p_slug" placeholder="advanced-amino" />
+                </div>
+                <div>
+                  <label>Tag</label>
+                  <input id="p_tag" placeholder="Recovery" />
+                </div>
+              </div>
+
+              <label>Title</label>
+              <input id="p_title" placeholder="Advanced Amino Acid Complex" />
+
+              <label>Description</label>
+              <textarea id="p_desc" placeholder="Short description..."></textarea>
+
+              <label>Bullets (one per line)</label>
+              <textarea id="p_bullets" placeholder="Bullet 1\nBullet 2\nBullet 3"></textarea>
+
+              <div class="grid2">
+                <div>
+                  <label>Old price</label>
+                  <input id="p_old" placeholder="€108.80" />
+                </div>
+                <div>
+                  <label>New price</label>
+                  <input id="p_new" placeholder="€39.95" />
+                </div>
+              </div>
+
+              <label>Price unit (optional)</label>
+              <input id="p_unit" placeholder="/ bottle" />
+
+              <label>Pexels image URL</label>
+              <input id="p_img" placeholder="https://images.pexels.com/photos/..." />
+
+              <label>Affiliate URL</label>
+              <input id="p_aff" placeholder="https://...#aff=ClawDave" />
+
+              <div class="actions">
+                <button class="btn btn-primary small" id="btn_save_product">Save</button>
+                <button class="btn btn-secondary small" id="btn_clear_product">Clear</button>
+                <button class="btn btn-danger small" id="btn_delete_product" style="display:none">Deactivate</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 style="margin:0 0 6px 0">Live preview</h3>
+              <p class="muted" style="margin:0 0 10px 0">This is how it will look on the homepage.</p>
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <img id="prev_img" src="" alt="" style="width:120px;height:120px;object-fit:cover;border-radius:18px;border:1px solid rgba(17,24,39,.10);background:rgba(17,24,39,.03)" />
+                <div>
+                  <div class="pill" style="display:inline-flex;margin-bottom:8px"><span class="dot"></span><span id="prev_tag">Tag</span></div>
+                  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin:0 0 6px 0" id="prev_title">Title</div>
+                  <div class="muted" id="prev_desc">Description…</div>
+                  <div style="margin-top:10px;font-weight:900">
+                    <span style="text-decoration:line-through;opacity:.55" id="prev_old">€0</span>
+                    <span style="margin-left:10px;color:var(--primary)" id="prev_new">€0</span>
+                    <span class="muted" id="prev_unit"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tablewrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Title</th>
+                      <th>Tag</th>
+                      <th>Price</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products_table"></tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-        <label>Title</label>
-        <input id="b_title" placeholder="Sleep Optimization: The Ultimate Guide" />
-        <label>Category</label>
-        <input id="b_cat" placeholder="Sleep" />
-        <label>Excerpt</label>
-        <textarea id="b_excerpt" placeholder="Short excerpt..."></textarea>
-        <label>Hero image URL (Pexels)</label>
-        <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
-        <label>Content HTML (optional)</label>
-        <textarea id="b_html" placeholder="<p>...</p>"></textarea>
-        <div class="actions">
-          <button class="btn btn-primary" id="btn_add_post">Add post</button>
-          <button class="btn btn-secondary" id="btn_load_posts">Load posts</button>
-        </div>
-        <pre class="list" id="posts_out">Ready.</pre>
-      </section>
+        </section>
+
+        <!-- POSTS VIEW -->
+        <section id="view_posts" style="display:none">
+          <div class="panelhead">
+            <div>
+              <h2>Blog posts</h2>
+              <p class="sub">Manage the blog index. (We can keep full articles static for SEO and still manage the index here.)</p>
+            </div>
+            <div class="toolbar">
+              <select id="b_lang" aria-label="language">
+                <option value="en">en</option>
+                <option value="de">de</option>
+              </select>
+              <button class="btn btn-secondary small" id="btn_load_posts">Refresh list</button>
+              <button class="btn btn-primary small" id="btn_new_post">New post</button>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h3 style="margin:0 0 6px 0">Editor</h3>
+              <p class="muted" style="margin:0 0 8px 0">Create an index entry (and optional HTML content).</p>
+
+              <input type="hidden" id="b_id" value="" />
+
+              <div class="grid2">
+                <div>
+                  <label>Slug</label>
+                  <input id="b_slug" placeholder="sleep-optimization" />
+                </div>
+                <div>
+                  <label>Category</label>
+                  <input id="b_cat" placeholder="Sleep" />
+                </div>
+              </div>
+
+              <label>Title</label>
+              <input id="b_title" placeholder="Sleep Optimization: The Ultimate Guide" />
+
+              <label>Excerpt</label>
+              <textarea id="b_excerpt" placeholder="Short excerpt..."></textarea>
+
+              <label>Hero image URL (Pexels)</label>
+              <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
+
+              <label>Content HTML (optional)</label>
+              <textarea id="b_html" placeholder="<p>...</p>"></textarea>
+
+              <div class="actions">
+                <button class="btn btn-primary small" id="btn_save_post">Save</button>
+                <button class="btn btn-secondary small" id="btn_clear_post">Clear</button>
+                <button class="btn btn-danger small" id="btn_delete_post" style="display:none">Deactivate</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 style="margin:0 0 6px 0">List</h3>
+              <p class="muted" style="margin:0 0 10px 0">Click “Edit” on a row to load it.</p>
+
+              <div class="tablewrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Slug</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="posts_table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
+  </div>
 
-    <p class="foot">API base URL: <code id="api_base"></code></p>
+  <div class="toast" id="toast">
+    <div class="t" id="toast_t">OK</div>
+    <div class="m" id="toast_m">…</div>
   </div>
 
 <script>
-  // Local dev server serves the API at the same origin.
-  // In production you can keep this as "/api" (recommended) or point to api.vital-core.site.
+  // Local dev server serves API at the same origin.
+  // Production should keep "/api" and route the Worker there (recommended).
   const API_BASE = "/api";
   document.getElementById('api_base').textContent = API_BASE;
 
-  const j = (id) => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
+
+  function toast(title, msg){
+    $('toast_t').textContent = title;
+    $('toast_m').textContent = msg;
+    const t = $('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2600);
+  }
 
   function bulletsToArray(s){
     return (s||"").split("\n").map(x=>x.trim()).filter(Boolean);
@@ -213,60 +428,266 @@
     return data;
   }
 
-  j('btn_add_product').onclick = async () => {
-    try{
-      const payload = {
-        lang: j('p_lang').value,
-        slug: j('p_slug').value,
-        title: j('p_title').value,
-        tag: j('p_tag').value,
-        description: j('p_desc').value,
-        bullets: bulletsToArray(j('p_bullets').value),
-        price_old: j('p_old').value,
-        price_new: j('p_new').value,
-        price_unit: j('p_unit').value,
-        image_url: j('p_img').value,
-        affiliate_url: j('p_aff').value,
-        featured: false,
-        active: true,
-      };
-      const out = await api('/products', { method: 'POST', body: JSON.stringify(payload) });
-      j('products_out').textContent = JSON.stringify(out, null, 2);
-    } catch(e){ j('products_out').textContent = String(e); }
-  };
+  function setView(name){
+    document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+    $('view_products').style.display = (name==='products') ? '' : 'none';
+    $('view_posts').style.display = (name==='posts') ? '' : 'none';
+  }
 
-  j('btn_load_products').onclick = async () => {
-    try{
-      const lang = j('p_lang').value;
-      const out = await api('/products?lang=' + encodeURIComponent(lang));
-      j('products_out').textContent = JSON.stringify(out, null, 2);
-    } catch(e){ j('products_out').textContent = String(e); }
-  };
+  document.querySelectorAll('.navbtn').forEach(btn=>{
+    btn.addEventListener('click', ()=>setView(btn.dataset.view));
+  });
 
-  j('btn_add_post').onclick = async () => {
-    try{
-      const payload = {
-        lang: j('b_lang').value,
-        slug: j('b_slug').value,
-        title: j('b_title').value,
-        category: j('b_cat').value,
-        excerpt: j('b_excerpt').value,
-        hero_image_url: j('b_img').value,
-        content_html: j('b_html').value,
-        active: true,
-      };
-      const out = await api('/posts', { method: 'POST', body: JSON.stringify(payload) });
-      j('posts_out').textContent = JSON.stringify(out, null, 2);
-    } catch(e){ j('posts_out').textContent = String(e); }
-  };
+  // -------- PRODUCTS --------
+  function clearProduct(){
+    $('p_id').value='';
+    $('p_slug').value='';
+    $('p_title').value='';
+    $('p_tag').value='';
+    $('p_desc').value='';
+    $('p_bullets').value='';
+    $('p_old').value='';
+    $('p_new').value='';
+    $('p_unit').value='';
+    $('p_img').value='';
+    $('p_aff').value='';
+    $('btn_delete_product').style.display='none';
+    updatePreview();
+  }
 
-  j('btn_load_posts').onclick = async () => {
+  function updatePreview(){
+    $('prev_tag').textContent = $('p_tag').value || 'Tag';
+    $('prev_title').textContent = $('p_title').value || 'Title';
+    $('prev_desc').textContent = $('p_desc').value || 'Description…';
+    $('prev_old').textContent = $('p_old').value || '€0';
+    $('prev_new').textContent = $('p_new').value || '€0';
+    $('prev_unit').textContent = $('p_unit').value || '';
+    const img = $('p_img').value || '';
+    $('prev_img').src = img;
+    $('prev_img').style.opacity = img ? '1' : '0.35';
+  }
+
+  ['p_slug','p_title','p_tag','p_desc','p_old','p_new','p_unit','p_img'].forEach(id=>{
+    $(id).addEventListener('input', updatePreview);
+  });
+
+  async function loadProducts(){
+    const lang = $('p_lang').value;
+    const out = await api('/products?lang=' + encodeURIComponent(lang));
+    const items = out.items || [];
+    $('count_products').textContent = String(items.length);
+    const tb = $('products_table');
+    tb.innerHTML='';
+    for(const it of items){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${it.id}</td>
+        <td><strong>${escapeHtml(it.title)}</strong><div class="muted">${escapeHtml(it.slug)}</div></td>
+        <td>${escapeHtml(it.tag||'')}</td>
+        <td>${escapeHtml(it.price_old||'')} → <span style="color:var(--primary);font-weight:900">${escapeHtml(it.price_new||'')}</span></td>
+        <td style="display:flex;gap:8px;align-items:center">
+          <button class="rowbtn" data-act="edit" data-id="${it.id}">Edit</button>
+          <button class="rowbtn" data-act="deact" data-id="${it.id}">Deactivate</button>
+        </td>
+      `;
+      tb.appendChild(tr);
+    }
+
+    tb.querySelectorAll('button[data-act="edit"]').forEach(b=>b.addEventListener('click', ()=>editProduct(Number(b.dataset.id), items)));
+    tb.querySelectorAll('button[data-act="deact"]').forEach(b=>b.addEventListener('click', ()=>deactivateProduct(Number(b.dataset.id))));
+
+    toast('Products', `Loaded ${items.length} items (${lang}).`);
+  }
+
+  function editProduct(id, items){
+    const it = items.find(x=>Number(x.id)===Number(id));
+    if(!it) return;
+    $('p_id').value = it.id;
+    $('p_slug').value = it.slug || '';
+    $('p_title').value = it.title || '';
+    $('p_tag').value = it.tag || '';
+    $('p_desc').value = it.description || '';
     try{
-      const lang = j('b_lang').value;
-      const out = await api('/posts?lang=' + encodeURIComponent(lang));
-      j('posts_out').textContent = JSON.stringify(out, null, 2);
-    } catch(e){ j('posts_out').textContent = String(e); }
+      const bullets = JSON.parse(it.bullets_json || '[]');
+      $('p_bullets').value = (Array.isArray(bullets) ? bullets : []).join('\n');
+    }catch(e){ $('p_bullets').value = ''; }
+    $('p_old').value = it.price_old || '';
+    $('p_new').value = it.price_new || '';
+    $('p_unit').value = it.price_unit || '';
+    $('p_img').value = it.image_url || '';
+    $('p_aff').value = it.affiliate_url || '';
+    $('btn_delete_product').style.display='inline-block';
+    updatePreview();
+    toast('Editor', `Loaded product #${it.id}`);
+  }
+
+  async function saveProduct(){
+    const lang = $('p_lang').value;
+    const payload = {
+      lang,
+      slug: $('p_slug').value.trim(),
+      title: $('p_title').value.trim(),
+      tag: $('p_tag').value.trim(),
+      description: $('p_desc').value.trim(),
+      bullets: bulletsToArray($('p_bullets').value),
+      price_old: $('p_old').value.trim(),
+      price_new: $('p_new').value.trim(),
+      price_unit: $('p_unit').value.trim(),
+      image_url: $('p_img').value.trim(),
+      affiliate_url: $('p_aff').value.trim(),
+      active: true,
+    };
+
+    if(!payload.slug || !payload.title) {
+      toast('Missing fields', 'slug and title are required');
+      return;
+    }
+
+    const id = $('p_id').value;
+    if(id){
+      await api('/products/' + encodeURIComponent(id), { method:'PUT', body: JSON.stringify(payload) });
+      toast('Saved', `Updated product #${id}`);
+    } else {
+      const out = await api('/products', { method:'POST', body: JSON.stringify(payload) });
+      toast('Saved', `Created product #${out.id}`);
+    }
+    await loadProducts();
+  }
+
+  async function deactivateProduct(id){
+    if(!confirm('Deactivate product #' + id + '?')) return;
+    await api('/products/' + encodeURIComponent(id), { method:'DELETE' });
+    toast('Deactivated', 'Product #' + id);
+    await loadProducts();
+    clearProduct();
+  }
+
+  // -------- POSTS --------
+  function clearPost(){
+    $('b_id').value='';
+    $('b_slug').value='';
+    $('b_title').value='';
+    $('b_cat').value='';
+    $('b_excerpt').value='';
+    $('b_img').value='';
+    $('b_html').value='';
+    $('btn_delete_post').style.display='none';
+  }
+
+  async function loadPosts(){
+    const lang = $('b_lang').value;
+    const out = await api('/posts?lang=' + encodeURIComponent(lang));
+    const items = out.items || [];
+    $('count_posts').textContent = String(items.length);
+    const tb = $('posts_table');
+    tb.innerHTML='';
+    for(const it of items){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${it.id}</td>
+        <td><strong>${escapeHtml(it.title)}</strong><div class="muted">${escapeHtml(it.excerpt||'')}</div></td>
+        <td>${escapeHtml(it.category||'')}</td>
+        <td><code>${escapeHtml(it.slug||'')}</code></td>
+        <td style="display:flex;gap:8px;align-items:center">
+          <button class="rowbtn" data-act="edit" data-id="${it.id}">Edit</button>
+          <button class="rowbtn" data-act="deact" data-id="${it.id}">Deactivate</button>
+        </td>
+      `;
+      tb.appendChild(tr);
+    }
+
+    tb.querySelectorAll('button[data-act="edit"]').forEach(b=>b.addEventListener('click', ()=>editPost(Number(b.dataset.id), items)));
+    tb.querySelectorAll('button[data-act="deact"]').forEach(b=>b.addEventListener('click', ()=>deactivatePost(Number(b.dataset.id))));
+
+    toast('Posts', `Loaded ${items.length} items (${lang}).`);
+  }
+
+  function editPost(id, items){
+    const it = items.find(x=>Number(x.id)===Number(id));
+    if(!it) return;
+    $('b_id').value = it.id;
+    $('b_slug').value = it.slug || '';
+    $('b_title').value = it.title || '';
+    $('b_cat').value = it.category || '';
+    $('b_excerpt').value = it.excerpt || '';
+    $('b_img').value = it.hero_image_url || '';
+    $('b_html').value = it.content_html || '';
+    $('btn_delete_post').style.display='inline-block';
+    toast('Editor', `Loaded post #${it.id}`);
+  }
+
+  async function savePost(){
+    const lang = $('b_lang').value;
+    const payload = {
+      lang,
+      slug: $('b_slug').value.trim(),
+      title: $('b_title').value.trim(),
+      category: $('b_cat').value.trim(),
+      excerpt: $('b_excerpt').value.trim(),
+      hero_image_url: $('b_img').value.trim(),
+      content_html: $('b_html').value,
+      active: true,
+    };
+    if(!payload.slug || !payload.title){
+      toast('Missing fields', 'slug and title are required');
+      return;
+    }
+    const id = $('b_id').value;
+    if(id){
+      await api('/posts/' + encodeURIComponent(id), { method:'PUT', body: JSON.stringify(payload) });
+      toast('Saved', `Updated post #${id}`);
+    } else {
+      const out = await api('/posts', { method:'POST', body: JSON.stringify(payload) });
+      toast('Saved', `Created post #${out.id}`);
+    }
+    await loadPosts();
+  }
+
+  async function deactivatePost(id){
+    if(!confirm('Deactivate post #' + id + '?')) return;
+    await api('/posts/' + encodeURIComponent(id), { method:'DELETE' });
+    toast('Deactivated', 'Post #' + id);
+    await loadPosts();
+    clearPost();
+  }
+
+  // Helpers
+  function escapeHtml(s){
+    return String(s||"")
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#039;');
+  }
+
+  // Wire buttons
+  $('btn_load_products').onclick = () => loadProducts().catch(e=>toast('Error', String(e)));
+  $('btn_new_product').onclick = () => { clearProduct(); toast('Editor', 'New product'); };
+  $('btn_save_product').onclick = () => saveProduct().catch(e=>toast('Error', String(e)));
+  $('btn_clear_product').onclick = () => clearProduct();
+  $('btn_delete_product').onclick = () => {
+    const id = Number($('p_id').value||0);
+    if(id) deactivateProduct(id).catch(e=>toast('Error', String(e)));
   };
+  $('p_lang').onchange = () => loadProducts().catch(e=>toast('Error', String(e)));
+
+  $('btn_load_posts').onclick = () => loadPosts().catch(e=>toast('Error', String(e)));
+  $('btn_new_post').onclick = () => { clearPost(); toast('Editor', 'New post'); };
+  $('btn_save_post').onclick = () => savePost().catch(e=>toast('Error', String(e)));
+  $('btn_clear_post').onclick = () => clearPost();
+  $('btn_delete_post').onclick = () => {
+    const id = Number($('b_id').value||0);
+    if(id) deactivatePost(id).catch(e=>toast('Error', String(e)));
+  };
+  $('b_lang').onchange = () => loadPosts().catch(e=>toast('Error', String(e)));
+
+  // Init
+  clearProduct();
+  clearPost();
+  updatePreview();
+  loadProducts().catch(()=>{});
+  loadPosts().catch(()=>{});
 </script>
 </body>
 </html>
