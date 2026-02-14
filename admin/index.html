@@ -187,8 +187,9 @@
   </div>
 
 <script>
-  // If you route the Worker under the same domain, set API_BASE to "/api".
-  const API_BASE = "https://api.vital-core.site";
+  // Local dev server serves the API at the same origin.
+  // In production you can keep this as "/api" (recommended) or point to api.vital-core.site.
+  const API_BASE = "/api";
   document.getElementById('api_base').textContent = API_BASE;
 
   const j = (id) => document.getElementById(id);
