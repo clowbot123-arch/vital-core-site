@@ -83,6 +83,150 @@ def ensure_db() -> None:
         con.execute("CREATE INDEX IF NOT EXISTS idx_products_lang_active ON products(lang, active)")
         con.execute("CREATE INDEX IF NOT EXISTS idx_posts_lang_active ON posts(lang, active)")
         con.execute("CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published_at)")
+
+        # Seed default products once so the admin isn't empty on first open.
+        cur = con.execute("SELECT COUNT(*) FROM products")
+        n = int(cur.fetchone()[0])
+        if n == 0:
+            now = utcnow_iso()
+            defaults = [
+                # EN
+                (
+                    "menopower-abs-total",
+                    "en",
+                    "MenoPower Abs TOTAL",
+                    "Women 40+",
+                    "A simple home ab plan (5–10 minutes/day) designed for consistency, posture, and a stronger core.",
+                    json.dumps([
+                        "Strong abs and core stability",
+                        "Better posture and less back discomfort",
+                        "Short sessions that actually fit real life",
+                    ]),
+                    "€35",
+                    "€29",
+                    "",
+                    "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg",
+                    "https://pilates4life.lpages.co/menopower-bauch-total/#aff=ClawDave",
+                    0,
+                    1,
+                    now,
+                    now,
+                ),
+                (
+                    "advanced-amino-acid-complex",
+                    "en",
+                    "Advanced Amino Acid Complex",
+                    "Recovery",
+                    "A premium amino acid formula for people who train (or want to keep muscle while dieting) and want better recovery.",
+                    json.dumps([
+                        "Supports recovery and training consistency",
+                        "Helps preserve lean mass during stress or dieting",
+                        "Simple daily routine",
+                    ]),
+                    "€108.80",
+                    "€39.95",
+                    "",
+                    "https://images.pexels.com/photos/3762875/pexels-photo-3762875.jpeg",
+                    "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=ClawDave",
+                    1,
+                    1,
+                    now,
+                    now,
+                ),
+                (
+                    "endopeak-vitality-formula",
+                    "en",
+                    "EndoPeak Vitality Formula",
+                    "Men 40+",
+                    "A focused pick for men who want better day-to-day energy, stamina, and vitality support.",
+                    json.dumps([
+                        "Natural energy support",
+                        "Endurance and vitality focus",
+                        "Easy to use",
+                    ]),
+                    "€159.37",
+                    "€69",
+                    "/ bottle",
+                    "https://images.pexels.com/photos/3772509/pexels-photo-3772509.jpeg",
+                    "https://endopeak24.com/d/order-now.php#aff=ClawDave",
+                    0,
+                    1,
+                    now,
+                    now,
+                ),
+                # DE
+                (
+                    "menopower-bauch",
+                    "de",
+                    "MenoPower Bauch TOTAL",
+                    "Frauen 40+",
+                    "Ein kurzer Bauch-Plan (5–10 Min/Tag) für mehr Stabilität, bessere Haltung und einen starken Core.",
+                    json.dumps([
+                        "Starker Core und bessere Stabilität",
+                        "Bessere Haltung, weniger Rücken-Ziehen",
+                        "Kurze Sessions, die wirklich in den Alltag passen",
+                    ]),
+                    "€35",
+                    "€29",
+                    "",
+                    "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg",
+                    "https://pilates4life.lpages.co/menopower-bauch-total/#aff=ClawDave",
+                    0,
+                    1,
+                    now,
+                    now,
+                ),
+                (
+                    "advanced-amino",
+                    "de",
+                    "Advanced Amino Acid Complex",
+                    "Regeneration",
+                    "Premium-Aminosäuren für Training, Muskelerhalt und bessere Regeneration.",
+                    json.dumps([
+                        "Unterstützt Regeneration und Trainingskonstanz",
+                        "Hilft beim Muskelerhalt in Diät/Stress",
+                        "Einfache tägliche Routine",
+                    ]),
+                    "€108.80",
+                    "€39.95",
+                    "",
+                    "https://images.pexels.com/photos/3762875/pexels-photo-3762875.jpeg",
+                    "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=ClawDave",
+                    1,
+                    1,
+                    now,
+                    now,
+                ),
+                (
+                    "endopeak",
+                    "de",
+                    "EndoPeak Vitality Formula",
+                    "Männer 40+",
+                    "Für Männer, die Energie, Ausdauer und Vitalität im Alltag unterstützen wollen.",
+                    json.dumps([
+                        "Natürliche Energie-Unterstützung",
+                        "Fokus auf Ausdauer & Vitalität",
+                        "Einfach anzuwenden",
+                    ]),
+                    "€159.37",
+                    "€69",
+                    "/ Flasche",
+                    "https://images.pexels.com/photos/3772509/pexels-photo-3772509.jpeg",
+                    "https://endopeak24.com/d/order-now.php#aff=ClawDave",
+                    0,
+                    1,
+                    now,
+                    now,
+                ),
+            ]
+            con.executemany(
+                """INSERT INTO products
+                   (slug, lang, title, tag, description, bullets_json, price_old, price_new, price_unit,
+                    image_url, affiliate_url, featured, active, created_at, updated_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                defaults,
+            )
+
         con.commit()
 
 
