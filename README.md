@@ -1,56 +1,70 @@
 # Vital Core - Health & Wellness Website
 
-## 🌐 Live Website
-**https://vital-core.site**
+Live: **https://vital-core.site**
 
-## 📂 Project Structure
+## Local dev (static + admin API)
 
-```
-vital-core-site/
-├── index.html          # Homepage
-├── blog.html           # Blog listing
-├── recipes.html        # Recipe catalog
-├── about.html          # About page
-├── css/
-│   └── style.css       # Main styles
-├── js/
-│   └── main.js         # JavaScript
-├── blog/
-│   ├── index.html      # Blog posts listing
-│   └── posts/          # Individual blog posts
-│       ├── muscle-building-40.html
-│       ├── energy-tips.html
-│       └── ...
-├── recipes/
-│   ├── index.html      # Recipe categories
-│   └── healthy-breakfast.html
-│   └── ...
-└── deploy.sh           # Cloudflare deployment
+This repo includes a tiny local dev server (`dev_server.py`) that:
+
+- serves the static site from the repo root
+- exposes a **local-only** JSON API at `/api` backed by SQLite (`data/admin.db`)
+- lets you use the single-file admin UI at `/admin`
+
+### Start the dev server
+
+```bash
+cd vital-core-site
+python3 dev_server.py
+# or choose a port:
+# PORT=8001 python3 dev_server.py
 ```
 
-## 🚀 Deploy to Cloudflare
+Open:
+
+- Site: <http://127.0.0.1:8001/>
+- Admin UI: <http://127.0.0.1:8001/admin/>
+
+### Admin HOWTO (add/edit a product or post)
+
+1. Open the admin UI: <http://127.0.0.1:8001/admin/>
+2. Choose a language (`en` / `de`).
+3. **Products**
+   - Click **New product**
+   - Fill `Title` (slug auto-fills; you can edit it)
+   - Add image + affiliate URL (optional validation helps)
+   - Press **Save** (shortcut: **Ctrl/Cmd+S**)
+4. **Blog posts**
+   - Switch to **Blog posts**
+   - Click **New post**
+   - Fill `Title` + `Slug` + optional excerpt/content
+   - Set `Published at` (ISO 8601) or leave it empty to default to “now”
+   - Press **Save** (shortcut: **Ctrl/Cmd+S**)
+
+Reset local content (optional): stop the server and delete `data/admin.db`.
+
+## Deploy to Cloudflare
 
 ```bash
 cd vital-core-site
 ./deploy.sh
 ```
 
-## 📝 Adding New Blog Posts
+## Security note
 
-1. Create HTML file in `blog/posts/`
-2. Add to `blog/index.html` listing
-3. Deploy!
+- `dev_server.py` + `/admin` are intended for **local/LAN testing only**.
+- In production, the admin/API should be protected (e.g. **Cloudflare Access** in front of the real Worker API).
 
-## 🌐 Tech Stack
+## Project structure (high level)
 
-- Pure HTML/CSS/JS (no frameworks)
-- Cloudflare Workers/Pages for hosting
-- Free & fast
-
----
-
-## 📊 Stats
-
-- **Started:** 2026-02-11
-- **Traffic:** Growing (international!)
-- **Goal:** 1,000 visitors/month
+```
+vital-core-site/
+├── admin/              # single-file admin UI
+├── data/               # local sqlite db (dev only)
+├── dev_server.py       # local static server + /api
+├── index.html          # homepage
+├── blog.html           # blog listing
+├── recipes.html        # recipes catalog
+├── about.html          # about page
+├── css/                # styles
+└── js/                 # scripts
+```

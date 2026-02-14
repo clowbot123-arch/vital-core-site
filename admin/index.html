@@ -172,6 +172,29 @@
 
     .muted{color:var(--text-light);font-weight:600}
 
+    .invalid{
+      border-color: rgba(180,35,24,.65) !important;
+      box-shadow: 0 0 0 4px rgba(180,35,24,.14) !important;
+    }
+    .err{
+      color:#b42318;
+      font-weight:800;
+      font-size:.88rem;
+      margin-top:6px;
+      display:none;
+    }
+    .err.show{display:block}
+
+    .empty{
+      padding:14px;
+      border:1px dashed rgba(17,24,39,.18);
+      border-radius:18px;
+      background:rgba(255,255,255,.65);
+      color:var(--text-light);
+      font-weight:700;
+      line-height:1.55;
+    }
+
     @media (max-width: 1050px){
       .layout{grid-template-columns:1fr}
       .split{grid-template-columns:1fr}
@@ -189,7 +212,7 @@
         </div>
       </div>
       <div class="status">
-        <span class="pill"><span class="dot"></span>Access protected</span>
+        <span class="pill warn"><span class="dot"></span>Local dev</span>
         <span class="pill warn">API: <code id="api_base"></code></span>
       </div>
     </div>
@@ -199,7 +222,7 @@
         <button class="navbtn active" data-view="products">Products <small id="count_products">0</small></button>
         <button class="navbtn" data-view="posts">Blog posts <small id="count_posts">0</small></button>
 
-        <p class="hint">Local testing uses the built-in API at <code>/api</code> via <code>dev_server.py</code>. Production will put Cloudflare Access in front.</p>
+        <p class="hint">Local testing uses the built-in API at <code>/api</code> via <code>dev_server.py</code>.<br/>Production should put <strong>Cloudflare Access</strong> in front of the real API.</p>
       </aside>
 
       <main class="panel">
@@ -231,6 +254,7 @@
                 <div>
                   <label>Slug</label>
                   <input id="p_slug" placeholder="advanced-amino" />
+                  <div class="err" id="err_p_slug"></div>
                 </div>
                 <div>
                   <label>Tag</label>
@@ -240,6 +264,7 @@
 
               <label>Title</label>
               <input id="p_title" placeholder="Advanced Amino Acid Complex" />
+              <div class="err" id="err_p_title"></div>
 
               <label>Description</label>
               <textarea id="p_desc" placeholder="Short description..."></textarea>
@@ -263,9 +288,11 @@
 
               <label>Pexels image URL</label>
               <input id="p_img" placeholder="https://images.pexels.com/photos/..." />
+              <div class="err" id="err_p_img"></div>
 
               <label>Affiliate URL</label>
               <input id="p_aff" placeholder="https://...#aff=ClawDave" />
+              <div class="err" id="err_p_aff"></div>
 
               <div class="actions">
                 <button class="btn btn-primary small" id="btn_save_product">Save</button>
@@ -337,6 +364,7 @@
                 <div>
                   <label>Slug</label>
                   <input id="b_slug" placeholder="sleep-optimization" />
+                  <div class="err" id="err_b_slug"></div>
                 </div>
                 <div>
                   <label>Category</label>
@@ -346,12 +374,17 @@
 
               <label>Title</label>
               <input id="b_title" placeholder="Sleep Optimization: The Ultimate Guide" />
+              <div class="err" id="err_b_title"></div>
 
               <label>Excerpt</label>
               <textarea id="b_excerpt" placeholder="Short excerpt..."></textarea>
 
               <label>Hero image URL (Pexels)</label>
               <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
+
+              <label>Published at (ISO 8601)</label>
+              <input id="b_pub" placeholder="2026-02-14T22:00:00+00:00" />
+              <div class="err" id="err_b_pub"></div>
 
               <label>Content HTML (optional)</label>
               <textarea id="b_html" placeholder="<p>...</p>"></textarea>
@@ -374,6 +407,7 @@
                       <th>ID</th>
                       <th>Title</th>
                       <th>Category</th>
+                      <th>Published</th>
                       <th>Slug</th>
                       <th>Actions</th>
                     </tr>
@@ -401,6 +435,96 @@
 
   const $ = (id) => document.getElementById(id);
 
+  const LS_KEY = 'vitalcore_admin_state_v1';
+  const state = {
+    view: 'products',
+    p_lang: 'en',
+    b_lang: 'en',
+    touched: { p_slug:false, b_slug:false },
+    dirty: { products:false, posts:false },
+  };
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return;
+      const s = JSON.parse(raw);
+      if(s && typeof s==='object'){
+        if(s.view) state.view = s.view;
+        if(s.p_lang) state.p_lang = s.p_lang;
+        if(s.b_lang) state.b_lang = s.b_lang;
+      }
+    }catch(e){}
+  }
+  function saveState(){
+    try{
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        view: state.view,
+        p_lang: $('p_lang').value,
+        b_lang: $('b_lang').value,
+      }));
+    }catch(e){}
+  }
+
+  function nowIso(){
+    return new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
+  }
+
+  function slugify(s){
+    return String(s||'')
+      .trim()
+      .toLowerCase()
+      .replace(/["'\u2019]/g,'')
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/^-+|-+$/g,'')
+      .replace(/-+/g,'-');
+  }
+
+  function setErr(inputId, errId, msg){
+    const inp = $(inputId);
+    const el = $(errId);
+    if(!inp || !el) return;
+    if(msg){
+      inp.classList.add('invalid');
+      el.textContent = msg;
+      el.classList.add('show');
+    } else {
+      inp.classList.remove('invalid');
+      el.textContent = '';
+      el.classList.remove('show');
+    }
+  }
+
+  function validSlug(s){
+    return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(s||''));
+  }
+
+  function validUrlOrEmpty(s){
+    const v = String(s||'').trim();
+    if(!v) return true;
+    try{
+      const u = new URL(v);
+      return (u.protocol === 'http:' || u.protocol === 'https:');
+    }catch(e){ return false; }
+  }
+
+  function markDirty(which){
+    state.dirty[which] = true;
+  }
+
+  function clearDirty(which){
+    state.dirty[which] = false;
+  }
+
+  function confirmLoseEdits(which){
+    if(!state.dirty[which]) return true;
+    return confirm('Discard unsaved changes?');
+  }
+
+  function currentView(){
+    return ($('view_posts').style.display === 'none') ? 'products' : 'posts';
+  }
+
   function toast(title, msg){
     $('toast_t').textContent = title;
     $('toast_m').textContent = msg;
@@ -424,11 +548,21 @@
     const txt = await res.text();
     let data;
     try{ data = JSON.parse(txt); } catch(e){ data = { raw: txt }; }
-    if(!res.ok) throw new Error((data && data.error) ? data.error : ("HTTP " + res.status));
+    if(!res.ok){
+      const msg = (data && data.error) ? data.error : (res.status + " " + (res.statusText||"HTTP"));
+      throw new Error(msg);
+    }
     return data;
   }
 
   function setView(name){
+    const cur = currentView();
+    if(cur !== name){
+      if(cur==='products' && !confirmLoseEdits('products')) return;
+      if(cur==='posts' && !confirmLoseEdits('posts')) return;
+    }
+    state.view = name;
+    saveState();
     document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
     $('view_products').style.display = (name==='products') ? '' : 'none';
     $('view_posts').style.display = (name==='posts') ? '' : 'none';
@@ -439,7 +573,8 @@
   });
 
   // -------- PRODUCTS --------
-  function clearProduct(){
+  function clearProduct(force=false){
+    if(!force && !confirmLoseEdits('products')) return;
     $('p_id').value='';
     $('p_slug').value='';
     $('p_title').value='';
@@ -452,6 +587,12 @@
     $('p_img').value='';
     $('p_aff').value='';
     $('btn_delete_product').style.display='none';
+    setErr('p_slug','err_p_slug','');
+    setErr('p_title','err_p_title','');
+    setErr('p_img','err_p_img','');
+    setErr('p_aff','err_p_aff','');
+    clearDirty('products');
+    state.touched.p_slug = false;
     updatePreview();
   }
 
@@ -467,17 +608,36 @@
     $('prev_img').style.opacity = img ? '1' : '0.35';
   }
 
-  ['p_slug','p_title','p_tag','p_desc','p_old','p_new','p_unit','p_img'].forEach(id=>{
-    $(id).addEventListener('input', updatePreview);
+  ['p_slug','p_title','p_tag','p_desc','p_bullets','p_old','p_new','p_unit','p_img','p_aff'].forEach(id=>{
+    $(id).addEventListener('input', ()=>{
+      markDirty('products');
+      updatePreview();
+    });
+  });
+
+  $('p_slug').addEventListener('input', ()=>{ state.touched.p_slug = true; });
+  $('p_title').addEventListener('input', ()=>{
+    if(!state.touched.p_slug && !$('p_slug').value.trim()){
+      $('p_slug').value = slugify($('p_title').value);
+    }
   });
 
   async function loadProducts(){
     const lang = $('p_lang').value;
+    state.p_lang = lang;
+    saveState();
     const out = await api('/products?lang=' + encodeURIComponent(lang));
     const items = out.items || [];
     $('count_products').textContent = String(items.length);
     const tb = $('products_table');
     tb.innerHTML='';
+    if(items.length===0){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td colspan="5"><div class="empty">No products yet. Click <strong>New product</strong> to create one. Tip: press <code>Ctrl/Cmd+S</code> to save.</div></td>`;
+      tb.appendChild(tr);
+      toast('Products', `Loaded 0 items (${lang}).`);
+      return;
+    }
     for(const it of items){
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -517,8 +677,35 @@
     $('p_img').value = it.image_url || '';
     $('p_aff').value = it.affiliate_url || '';
     $('btn_delete_product').style.display='inline-block';
+    setErr('p_slug','err_p_slug','');
+    setErr('p_title','err_p_title','');
+    setErr('p_img','err_p_img','');
+    setErr('p_aff','err_p_aff','');
+    clearDirty('products');
+    state.touched.p_slug = true;
     updatePreview();
     toast('Editor', `Loaded product #${it.id}`);
+  }
+
+
+  function validateProduct(payload){
+    let ok = true;
+    const s = payload.slug || '';
+    if(!s){ setErr('p_slug','err_p_slug','Slug is required.'); ok=false; }
+    else if(!validSlug(s)){ setErr('p_slug','err_p_slug','Use lowercase letters, numbers and hyphens only.'); ok=false; }
+    else setErr('p_slug','err_p_slug','');
+
+    if(!payload.title){ setErr('p_title','err_p_title','Title is required.'); ok=false; }
+    else setErr('p_title','err_p_title','');
+
+    if(!validUrlOrEmpty(payload.image_url)){ setErr('p_img','err_p_img','Image URL must be http(s).'); ok=false; }
+    else setErr('p_img','err_p_img','');
+
+    if(!validUrlOrEmpty(payload.affiliate_url)){ setErr('p_aff','err_p_aff','Affiliate URL must be http(s).'); ok=false; }
+    else setErr('p_aff','err_p_aff','');
+
+    if(!ok) toast('Fix fields', 'Please correct the highlighted fields.');
+    return ok;
   }
 
   async function saveProduct(){
@@ -538,10 +725,8 @@
       active: true,
     };
 
-    if(!payload.slug || !payload.title) {
-      toast('Missing fields', 'slug and title are required');
-      return;
-    }
+    const ok = validateProduct(payload);
+    if(!ok) return;
 
     const id = $('p_id').value;
     if(id){
@@ -551,6 +736,7 @@
       const out = await api('/products', { method:'POST', body: JSON.stringify(payload) });
       toast('Saved', `Created product #${out.id}`);
     }
+    clearDirty('products');
     await loadProducts();
   }
 
@@ -563,7 +749,8 @@
   }
 
   // -------- POSTS --------
-  function clearPost(){
+  function clearPost(force=false){
+    if(!force && !confirmLoseEdits('posts')) return;
     $('b_id').value='';
     $('b_slug').value='';
     $('b_title').value='';
@@ -571,22 +758,38 @@
     $('b_excerpt').value='';
     $('b_img').value='';
     $('b_html').value='';
+    $('b_pub').value = nowIso();
     $('btn_delete_post').style.display='none';
+    setErr('b_slug','err_b_slug','');
+    setErr('b_title','err_b_title','');
+    setErr('b_pub','err_b_pub','');
+    clearDirty('posts');
+    state.touched.b_slug = false;
   }
 
   async function loadPosts(){
     const lang = $('b_lang').value;
+    state.b_lang = lang;
+    saveState();
     const out = await api('/posts?lang=' + encodeURIComponent(lang));
     const items = out.items || [];
     $('count_posts').textContent = String(items.length);
     const tb = $('posts_table');
     tb.innerHTML='';
+    if(items.length===0){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td colspan="6"><div class="empty">No posts yet. Click <strong>New post</strong> to create one. Tip: press <code>Ctrl/Cmd+S</code> to save.</div></td>`;
+      tb.appendChild(tr);
+      toast('Posts', `Loaded 0 items (${lang}).`);
+      return;
+    }
     for(const it of items){
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${it.id}</td>
         <td><strong>${escapeHtml(it.title)}</strong><div class="muted">${escapeHtml(it.excerpt||'')}</div></td>
         <td>${escapeHtml(it.category||'')}</td>
+        <td><code>${escapeHtml((it.published_at||'').slice(0,10))}</code></td>
         <td><code>${escapeHtml(it.slug||'')}</code></td>
         <td style="display:flex;gap:8px;align-items:center">
           <button class="rowbtn" data-act="edit" data-id="${it.id}">Edit</button>
@@ -611,9 +814,53 @@
     $('b_cat').value = it.category || '';
     $('b_excerpt').value = it.excerpt || '';
     $('b_img').value = it.hero_image_url || '';
+    $('b_pub').value = it.published_at || nowIso();
     $('b_html').value = it.content_html || '';
     $('btn_delete_post').style.display='inline-block';
+    setErr('b_slug','err_b_slug','');
+    setErr('b_title','err_b_title','');
+    setErr('b_pub','err_b_pub','');
+    clearDirty('posts');
+    state.touched.b_slug = true;
     toast('Editor', `Loaded post #${it.id}`);
+  }
+
+  ['b_slug','b_title','b_cat','b_excerpt','b_img','b_pub','b_html'].forEach(id=>{
+    $(id).addEventListener('input', ()=>{
+      markDirty('posts');
+    });
+  });
+
+  $('b_slug').addEventListener('input', ()=>{ state.touched.b_slug = true; });
+  $('b_title').addEventListener('input', ()=>{
+    if(!state.touched.b_slug && !$('b_slug').value.trim()){
+      $('b_slug').value = slugify($('b_title').value);
+    }
+  });
+
+
+  function validatePost(payload){
+    let ok = true;
+    const s = payload.slug || '';
+    if(!s){ setErr('b_slug','err_b_slug','Slug is required.'); ok=false; }
+    else if(!validSlug(s)){ setErr('b_slug','err_b_slug','Use lowercase letters, numbers and hyphens only.'); ok=false; }
+    else setErr('b_slug','err_b_slug','');
+
+    if(!payload.title){ setErr('b_title','err_b_title','Title is required.'); ok=false; }
+    else setErr('b_title','err_b_title','');
+
+    // published_at should be parseable ISO; allow empty (we will default it).
+    const pv = String(payload.published_at||'').trim();
+    if(pv){
+      const d = new Date(pv);
+      if(isNaN(d.getTime())){ setErr('b_pub','err_b_pub','Use ISO 8601, e.g. 2026-02-14T22:00:00+00:00'); ok=false; }
+      else setErr('b_pub','err_b_pub','');
+    } else {
+      setErr('b_pub','err_b_pub','');
+    }
+
+    if(!ok) toast('Fix fields', 'Please correct the highlighted fields.');
+    return ok;
   }
 
   async function savePost(){
@@ -626,12 +873,11 @@
       excerpt: $('b_excerpt').value.trim(),
       hero_image_url: $('b_img').value.trim(),
       content_html: $('b_html').value,
+      published_at: ($('b_pub').value||'').trim() || nowIso(),
       active: true,
     };
-    if(!payload.slug || !payload.title){
-      toast('Missing fields', 'slug and title are required');
-      return;
-    }
+    const ok = validatePost(payload);
+    if(!ok) return;
     const id = $('b_id').value;
     if(id){
       await api('/posts/' + encodeURIComponent(id), { method:'PUT', body: JSON.stringify(payload) });
@@ -640,6 +886,7 @@
       const out = await api('/posts', { method:'POST', body: JSON.stringify(payload) });
       toast('Saved', `Created post #${out.id}`);
     }
+    clearDirty('posts');
     await loadPosts();
   }
 
@@ -663,7 +910,7 @@
 
   // Wire buttons
   $('btn_load_products').onclick = () => loadProducts().catch(e=>toast('Error', String(e)));
-  $('btn_new_product').onclick = () => { clearProduct(); toast('Editor', 'New product'); };
+  $('btn_new_product').onclick = () => { clearProduct(); toast('Editor', 'New product'); $('p_title').focus(); };
   $('btn_save_product').onclick = () => saveProduct().catch(e=>toast('Error', String(e)));
   $('btn_clear_product').onclick = () => clearProduct();
   $('btn_delete_product').onclick = () => {
@@ -673,7 +920,7 @@
   $('p_lang').onchange = () => loadProducts().catch(e=>toast('Error', String(e)));
 
   $('btn_load_posts').onclick = () => loadPosts().catch(e=>toast('Error', String(e)));
-  $('btn_new_post').onclick = () => { clearPost(); toast('Editor', 'New post'); };
+  $('btn_new_post').onclick = () => { clearPost(); toast('Editor', 'New post'); $('b_title').focus(); };
   $('btn_save_post').onclick = () => savePost().catch(e=>toast('Error', String(e)));
   $('btn_clear_post').onclick = () => clearPost();
   $('btn_delete_post').onclick = () => {
@@ -682,10 +929,33 @@
   };
   $('b_lang').onchange = () => loadPosts().catch(e=>toast('Error', String(e)));
 
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e)=>{
+    const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+    const mod = isMac ? e.metaKey : e.ctrlKey;
+    if(mod && e.key.toLowerCase()==='s'){
+      e.preventDefault();
+      const v = currentView();
+      if(v==='products') saveProduct().catch(err=>toast('Error', String(err)));
+      else savePost().catch(err=>toast('Error', String(err)));
+      return;
+    }
+    if(e.key==='Escape'){
+      const v = currentView();
+      if(v==='products') clearProduct();
+      else clearPost();
+    }
+  });
+
   // Init
-  clearProduct();
-  clearPost();
+  loadState();
+  $('p_lang').value = state.p_lang || 'en';
+  $('b_lang').value = state.b_lang || 'en';
+  clearProduct(true);
+  clearPost(true);
   updatePreview();
+  setView(state.view || 'products');
   loadProducts().catch(()=>{});
   loadPosts().catch(()=>{});
 </script>
