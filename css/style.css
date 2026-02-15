@@ -125,14 +125,23 @@ h1, h2, h3 {
 
 /* Buttons */
 .btn {
-    display: inline-block;
-    padding: 12px 30px;
-    border-radius: var(--radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 999px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 800;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, background 0.18s ease;
     border: none;
+    white-space: nowrap;
+}
+
+.btn:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(39,174,96,.18);
 }
 
 .btn-primary {
