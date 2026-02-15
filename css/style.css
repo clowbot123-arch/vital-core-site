@@ -569,6 +569,32 @@ footer p:last-child {
     margin-bottom: 10px;
 }
 
+/* Keep article/recipe hero images visually controlled */
+.article-hero,
+.recipe-hero,
+.post-hero {
+    margin: 0 0 22px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+
+.article-hero img,
+.recipe-hero img,
+.post-hero img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Any inline image inside long article bodies */
+.blog-post-full img,
+.recipe-detail img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Recipe Page */
 .recipe-detail {
     max-width: 900px;
@@ -676,4 +702,5 @@ footer p:last-child {
   .post-card h3,.recipe-content h3,.recipe-card h4{font-size:1.08rem;}
   .product-cta .btn{width:100%;}
   .nav-links{gap:12px;font-size:.94rem;flex-wrap:wrap;justify-content:flex-end;}
+  .article-hero img,.recipe-hero img,.post-hero img{max-height:260px;}
 }
