@@ -21,6 +21,7 @@ import os
 import posixpath
 import re
 import sqlite3
+from urllib.parse import parse_qs
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from http import HTTPStatus
@@ -83,6 +84,8 @@ def ensure_db() -> None:
         con.execute("CREATE INDEX IF NOT EXISTS idx_products_lang_active ON products(lang, active)")
         con.execute("CREATE INDEX IF NOT EXISTS idx_posts_lang_active ON posts(lang, active)")
         con.execute("CREATE INDEX IF NOT EXISTS idx_posts_published ON posts(published_at)")
+        con.execute("CREATE UNIQUE INDEX IF NOT EXISTS uniq_active_product_slug_lang ON products(lang, slug) WHERE active=1")
+        con.execute("CREATE UNIQUE INDEX IF NOT EXISTS uniq_active_post_slug_lang ON posts(lang, slug) WHERE active=1")
 
         # Seed default products once so the admin isn't empty on first open.
         cur = con.execute("SELECT COUNT(*) FROM products")
@@ -263,6 +266,88 @@ def row_to_dict(cursor: sqlite3.Cursor, row: sqlite3.Row) -> dict[str, Any]:
     return d
 
 
+
+
+def norm_lang(v: Any) -> str:
+    lang = str(v or "en").strip().lower()
+    return lang if lang in ("en", "de") else "en"
+
+
+def clean_slug(v: Any) -> str:
+    return str(v or "").strip().lower()
+
+
+def valid_slug(v: str) -> bool:
+    return bool(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", v))
+
+
+def valid_http_url_or_empty(v: Any) -> bool:
+    from urllib.parse import urlparse
+
+    s = str(v or "").strip()
+    if not s:
+        return True
+    try:
+        u = urlparse(s)
+        return u.scheme in ("http", "https") and bool(u.netloc)
+    except Exception:
+        return False
+
+
+def validate_product_payload(body: dict[str, Any], *, partial: bool = False) -> str | None:
+    if (not partial) or ("slug" in body):
+        slug = clean_slug(body.get("slug"))
+        if not slug:
+            return "slug is required"
+        if not valid_slug(slug):
+            return "invalid slug: use lowercase letters, numbers, hyphens"
+    if (not partial) or ("title" in body):
+        title = str(body.get("title") or "").strip()
+        if not title:
+            return "title is required"
+    if "image_url" in body and not valid_http_url_or_empty(body.get("image_url")):
+        return "image_url must be http(s)"
+    if "affiliate_url" in body and not valid_http_url_or_empty(body.get("affiliate_url")):
+        return "affiliate_url must be http(s)"
+    if "lang" in body and norm_lang(body.get("lang")) not in ("en", "de"):
+        return "invalid lang"
+    return None
+
+
+def validate_post_payload(body: dict[str, Any], *, partial: bool = False) -> str | None:
+    if (not partial) or ("slug" in body):
+        slug = clean_slug(body.get("slug"))
+        if not slug:
+            return "slug is required"
+        if not valid_slug(slug):
+            return "invalid slug: use lowercase letters, numbers, hyphens"
+    if (not partial) or ("title" in body):
+        title = str(body.get("title") or "").strip()
+        if not title:
+            return "title is required"
+    if "hero_image_url" in body and not valid_http_url_or_empty(body.get("hero_image_url")):
+        return "hero_image_url must be http(s)"
+    if "published_at" in body and str(body.get("published_at") or "").strip():
+        try:
+            datetime.fromisoformat(str(body.get("published_at")))
+        except Exception:
+            return "published_at must be ISO 8601"
+    if "lang" in body and norm_lang(body.get("lang")) not in ("en", "de"):
+        return "invalid lang"
+    return None
+
+
+def has_active_slug_conflict(con: sqlite3.Connection, table: str, lang: str, slug: str, *, exclude_id: int | None = None) -> bool:
+    if exclude_id is None:
+        row = con.execute(f"SELECT id FROM {table} WHERE lang=? AND slug=? AND active=1 LIMIT 1", (lang, slug)).fetchone()
+    else:
+        row = con.execute(
+            f"SELECT id FROM {table} WHERE lang=? AND slug=? AND active=1 AND id<>? LIMIT 1",
+            (lang, slug, exclude_id),
+        ).fetchone()
+    return row is not None
+
+
 class Handler(SimpleHTTPRequestHandler):
     # Make SimpleHTTPRequestHandler serve from repo root
     def translate_path(self, path: str) -> str:
@@ -319,18 +404,15 @@ class Handler(SimpleHTTPRequestHandler):
         if "?" in self.path:
             q = self.path.split("?", 1)[1]
 
-        def query_param(name: str, default: str = "") -> str:
-            for part in q.split("&") if q else []:
-                if not part:
-                    continue
-                k, _, v = part.partition("=")
-                if k == name:
-                    return re.sub(r"\+", " ", v)
-            return default
+        qs = parse_qs(q, keep_blank_values=True) if q else {}
 
-        lang = (query_param("lang", "en") or "en").lower()
-        if lang not in ("en", "de"):
-            lang = "en"
+        def query_param(name: str, default: str = "") -> str:
+            vals = qs.get(name)
+            if not vals:
+                return default
+            return str(vals[0])
+
+        lang = norm_lang(query_param("lang", "en"))
 
         m_prod = re.fullmatch(r"/api/products(?:/(\d+))?/?", path)
         m_post = re.fullmatch(r"/api/posts(?:/(\d+))?/?", path)
@@ -355,18 +437,25 @@ class Handler(SimpleHTTPRequestHandler):
 
                     if self.command == "POST":
                         body = read_json(self)
+                        err = validate_product_payload(body, partial=False)
+                        if err:
+                            return bad(self, err, status=400)
                         now = utcnow_iso()
                         bullets = body.get("bullets")
                         if not isinstance(bullets, list):
                             bullets = []
+                        lang_value = norm_lang(body.get("lang"))
+                        slug_value = clean_slug(body.get("slug"))
+                        if has_active_slug_conflict(con, "products", lang_value, slug_value):
+                            return bad(self, f"active product with slug '{slug_value}' already exists for lang '{lang_value}'", status=409)
                         con.execute(
                             """INSERT INTO products
                                (slug, lang, title, tag, description, bullets_json, price_old, price_new, price_unit,
                                 image_url, affiliate_url, featured, active, created_at, updated_at)
                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                             (
-                                str(body.get("slug") or "").strip(),
-                                str(body.get("lang") or "en").lower(),
+                                slug_value,
+                                lang_value,
                                 str(body.get("title") or "").strip(),
                                 str(body.get("tag") or "").strip(),
                                 str(body.get("description") or "").strip(),
@@ -389,11 +478,19 @@ class Handler(SimpleHTTPRequestHandler):
                     if pid and self.command in ("PUT", "DELETE"):
                         now = utcnow_iso()
                         if self.command == "DELETE":
-                            con.execute("UPDATE products SET active=0, updated_at=? WHERE id=?", (now, int(pid)))
+                            cur = con.execute("UPDATE products SET active=0, updated_at=? WHERE id=?", (now, int(pid)))
                             con.commit()
+                            if cur.rowcount == 0:
+                                return bad(self, "product not found", status=404)
                             return send_json(self, {"ok": True})
 
                         body = read_json(self)
+                        err = validate_product_payload(body, partial=True)
+                        if err:
+                            return bad(self, err, status=400)
+                        exists = con.execute("SELECT id FROM products WHERE id=?", (int(pid),)).fetchone()
+                        if not exists:
+                            return bad(self, "product not found", status=404)
                         # minimal: overwrite provided fields
                         fields = {
                             "slug": body.get("slug"),
@@ -417,6 +514,12 @@ class Handler(SimpleHTTPRequestHandler):
                                 continue
                             sets.append(f"{k}=?")
                             vals.append(v)
+                        next_lang = norm_lang(body.get("lang")) if "lang" in body else con.execute("SELECT lang FROM products WHERE id=?", (int(pid),)).fetchone()[0]
+                        next_slug = clean_slug(body.get("slug")) if "slug" in body else con.execute("SELECT slug FROM products WHERE id=?", (int(pid),)).fetchone()[0]
+                        next_active = (1 if body.get("active") else 0) if "active" in body else con.execute("SELECT active FROM products WHERE id=?", (int(pid),)).fetchone()[0]
+                        if next_active == 1 and has_active_slug_conflict(con, "products", next_lang, next_slug, exclude_id=int(pid)):
+                            return bad(self, f"active product with slug '{next_slug}' already exists for lang '{next_lang}'", status=409)
+
                         sets.append("updated_at=?")
                         vals.append(now)
                         vals.append(int(pid))
@@ -442,16 +545,23 @@ class Handler(SimpleHTTPRequestHandler):
 
                     if self.command == "POST":
                         body = read_json(self)
+                        err = validate_post_payload(body, partial=False)
+                        if err:
+                            return bad(self, err, status=400)
                         now = utcnow_iso()
                         published = str(body.get("published_at") or now)
+                        lang_value = norm_lang(body.get("lang"))
+                        slug_value = clean_slug(body.get("slug"))
+                        if has_active_slug_conflict(con, "posts", lang_value, slug_value):
+                            return bad(self, f"active post with slug '{slug_value}' already exists for lang '{lang_value}'", status=409)
                         con.execute(
                             """INSERT INTO posts
                                (slug, lang, title, category, excerpt, hero_image_url, content_html, published_at,
                                 active, created_at, updated_at)
                                VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
                             (
-                                str(body.get("slug") or "").strip(),
-                                str(body.get("lang") or "en").lower(),
+                                slug_value,
+                                lang_value,
                                 str(body.get("title") or "").strip(),
                                 str(body.get("category") or "").strip(),
                                 str(body.get("excerpt") or "").strip(),
@@ -470,11 +580,19 @@ class Handler(SimpleHTTPRequestHandler):
                     if post_id and self.command in ("PUT", "DELETE"):
                         now = utcnow_iso()
                         if self.command == "DELETE":
-                            con.execute("UPDATE posts SET active=0, updated_at=? WHERE id=?", (now, int(post_id)))
+                            cur = con.execute("UPDATE posts SET active=0, updated_at=? WHERE id=?", (now, int(post_id)))
                             con.commit()
+                            if cur.rowcount == 0:
+                                return bad(self, "post not found", status=404)
                             return send_json(self, {"ok": True})
 
                         body = read_json(self)
+                        err = validate_post_payload(body, partial=True)
+                        if err:
+                            return bad(self, err, status=400)
+                        exists = con.execute("SELECT id FROM posts WHERE id=?", (int(post_id),)).fetchone()
+                        if not exists:
+                            return bad(self, "post not found", status=404)
                         fields = {
                             "slug": body.get("slug"),
                             "lang": (body.get("lang") or None),
@@ -493,6 +611,12 @@ class Handler(SimpleHTTPRequestHandler):
                                 continue
                             sets.append(f"{k}=?")
                             vals.append(v)
+                        next_lang = norm_lang(body.get("lang")) if "lang" in body else con.execute("SELECT lang FROM posts WHERE id=?", (int(post_id),)).fetchone()[0]
+                        next_slug = clean_slug(body.get("slug")) if "slug" in body else con.execute("SELECT slug FROM posts WHERE id=?", (int(post_id),)).fetchone()[0]
+                        next_active = (1 if body.get("active") else 0) if "active" in body else con.execute("SELECT active FROM posts WHERE id=?", (int(post_id),)).fetchone()[0]
+                        if next_active == 1 and has_active_slug_conflict(con, "posts", next_lang, next_slug, exclude_id=int(post_id)):
+                            return bad(self, f"active post with slug '{next_slug}' already exists for lang '{next_lang}'", status=409)
+
                         sets.append("updated_at=?")
                         vals.append(now)
                         vals.append(int(post_id))

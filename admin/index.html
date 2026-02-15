@@ -213,7 +213,7 @@
       </div>
       <div class="status">
         <span class="pill warn"><span class="dot"></span>Local dev</span>
-        <span class="pill warn">API: <code id="api_base"></code></span>
+        <span class="pill warn" id="api_health"><span class="dot"></span>API: <code id="api_base"></code> <span id="api_health_txt">checking…</span></span>
       </div>
     </div>
 
@@ -381,6 +381,7 @@
 
               <label>Hero image URL (Pexels)</label>
               <input id="b_img" placeholder="https://images.pexels.com/photos/..." />
+              <div class="err" id="err_b_img"></div>
 
               <label>Published at (ISO 8601)</label>
               <input id="b_pub" placeholder="2026-02-14T22:00:00+00:00" />
@@ -434,6 +435,22 @@
   document.getElementById('api_base').textContent = API_BASE;
 
   const $ = (id) => document.getElementById(id);
+
+  function setApiHealth(ok, msg){
+    const pill = $('api_health');
+    const t = $('api_health_txt');
+    if(!pill || !t) return;
+    t.textContent = msg || (ok ? "online" : "offline");
+    pill.classList.toggle('warn', !ok);
+  }
+
+  function withFriendlyError(e){
+    const msg = String(e && e.message ? e.message : e || "Unknown error");
+    if(msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('AbortError')){
+      return "Cannot reach API. Check dev_server.py / Worker route and try again.";
+    }
+    return msg.replace(/^Error:\s*/,'');
+  }
 
   const LS_KEY = 'vitalcore_admin_state_v1';
   const state = {
@@ -538,20 +555,29 @@
   }
 
   async function api(path, opts={}){
-    const res = await fetch(API_BASE + path, {
-      ...opts,
-      headers: {
-        "content-type": "application/json",
-        ...(opts.headers||{})
-      }
-    });
+    let res;
+    try{
+      res = await fetch(API_BASE + path, {
+        ...opts,
+        headers: {
+          "content-type": "application/json",
+          ...(opts.headers||{})
+        }
+      });
+    }catch(e){
+      setApiHealth(false, 'offline');
+      throw e;
+    }
+
     const txt = await res.text();
     let data;
     try{ data = JSON.parse(txt); } catch(e){ data = { raw: txt }; }
     if(!res.ok){
+      setApiHealth(false, 'error');
       const msg = (data && data.error) ? data.error : (res.status + " " + (res.statusText||"HTTP"));
       throw new Error(msg);
     }
+    setApiHealth(true, 'online');
     return data;
   }
 
@@ -660,6 +686,7 @@
   }
 
   function editProduct(id, items){
+    if(!confirmLoseEdits('products')) return;
     const it = items.find(x=>Number(x.id)===Number(id));
     if(!it) return;
     $('p_id').value = it.id;
@@ -763,6 +790,7 @@
     setErr('b_slug','err_b_slug','');
     setErr('b_title','err_b_title','');
     setErr('b_pub','err_b_pub','');
+    setErr('b_img','err_b_img','');
     clearDirty('posts');
     state.touched.b_slug = false;
   }
@@ -806,6 +834,7 @@
   }
 
   function editPost(id, items){
+    if(!confirmLoseEdits('posts')) return;
     const it = items.find(x=>Number(x.id)===Number(id));
     if(!it) return;
     $('b_id').value = it.id;
@@ -820,6 +849,7 @@
     setErr('b_slug','err_b_slug','');
     setErr('b_title','err_b_title','');
     setErr('b_pub','err_b_pub','');
+    setErr('b_img','err_b_img','');
     clearDirty('posts');
     state.touched.b_slug = true;
     toast('Editor', `Loaded post #${it.id}`);
@@ -848,6 +878,9 @@
 
     if(!payload.title){ setErr('b_title','err_b_title','Title is required.'); ok=false; }
     else setErr('b_title','err_b_title','');
+
+    if(!validUrlOrEmpty(payload.hero_image_url)){ setErr('b_img','err_b_img','Hero image URL must be http(s).'); ok=false; }
+    else setErr('b_img','err_b_img','');
 
     // published_at should be parseable ISO; allow empty (we will default it).
     const pv = String(payload.published_at||'').trim();
@@ -909,25 +942,51 @@
   }
 
   // Wire buttons
-  $('btn_load_products').onclick = () => loadProducts().catch(e=>toast('Error', String(e)));
+  $('btn_load_products').onclick = () => loadProducts().catch(e=>toast('Error', withFriendlyError(e)));
   $('btn_new_product').onclick = () => { clearProduct(); toast('Editor', 'New product'); $('p_title').focus(); };
-  $('btn_save_product').onclick = () => saveProduct().catch(e=>toast('Error', String(e)));
+  $('btn_save_product').onclick = async () => {
+    const b = $('btn_save_product');
+    if(b.disabled) return;
+    b.disabled = true;
+    try{ await saveProduct(); }
+    catch(e){ toast('Error', withFriendlyError(e)); }
+    finally{ b.disabled = false; }
+  };
   $('btn_clear_product').onclick = () => clearProduct();
   $('btn_delete_product').onclick = () => {
     const id = Number($('p_id').value||0);
-    if(id) deactivateProduct(id).catch(e=>toast('Error', String(e)));
+    if(id) deactivateProduct(id).catch(e=>toast('Error', withFriendlyError(e)));
   };
-  $('p_lang').onchange = () => loadProducts().catch(e=>toast('Error', String(e)));
+  $('p_lang').onchange = (e) => {
+    if(state.dirty.products && !confirmLoseEdits('products')){
+      $('p_lang').value = state.p_lang || 'en';
+      return;
+    }
+    loadProducts().catch(err=>toast('Error', withFriendlyError(err)));
+  };
 
-  $('btn_load_posts').onclick = () => loadPosts().catch(e=>toast('Error', String(e)));
+  $('btn_load_posts').onclick = () => loadPosts().catch(e=>toast('Error', withFriendlyError(e)));
   $('btn_new_post').onclick = () => { clearPost(); toast('Editor', 'New post'); $('b_title').focus(); };
-  $('btn_save_post').onclick = () => savePost().catch(e=>toast('Error', String(e)));
+  $('btn_save_post').onclick = async () => {
+    const b = $('btn_save_post');
+    if(b.disabled) return;
+    b.disabled = true;
+    try{ await savePost(); }
+    catch(e){ toast('Error', withFriendlyError(e)); }
+    finally{ b.disabled = false; }
+  };
   $('btn_clear_post').onclick = () => clearPost();
   $('btn_delete_post').onclick = () => {
     const id = Number($('b_id').value||0);
-    if(id) deactivatePost(id).catch(e=>toast('Error', String(e)));
+    if(id) deactivatePost(id).catch(e=>toast('Error', withFriendlyError(e)));
   };
-  $('b_lang').onchange = () => loadPosts().catch(e=>toast('Error', String(e)));
+  $('b_lang').onchange = () => {
+    if(state.dirty.posts && !confirmLoseEdits('posts')){
+      $('b_lang').value = state.b_lang || 'en';
+      return;
+    }
+    loadPosts().catch(err=>toast('Error', withFriendlyError(err)));
+  };
 
 
   // Keyboard shortcuts
@@ -937,8 +996,8 @@
     if(mod && e.key.toLowerCase()==='s'){
       e.preventDefault();
       const v = currentView();
-      if(v==='products') saveProduct().catch(err=>toast('Error', String(err)));
-      else savePost().catch(err=>toast('Error', String(err)));
+      if(v==='products') saveProduct().catch(err=>toast('Error', withFriendlyError(err)));
+      else savePost().catch(err=>toast('Error', withFriendlyError(err)));
       return;
     }
     if(e.key==='Escape'){
@@ -956,7 +1015,7 @@
   clearPost(true);
   updatePreview();
   setView(state.view || 'products');
-  loadProducts().catch(()=>{});
+  loadProducts().catch(()=>setApiHealth(false, 'offline'));
   loadPosts().catch(()=>{});
 </script>
 </body>

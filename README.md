@@ -42,17 +42,41 @@ Open:
 
 Reset local content (optional): stop the server and delete `data/admin.db`.
 
-## Deploy to Cloudflare
+## Production deployment: Cloudflare Access + Worker + D1
+
+Recommended setup keeps the public site static, with authenticated writes through `/api`:
+
+1. **Static site** (`vital-core-site`) on Cloudflare Pages (or any static host)
+2. **Worker API** (`vital-core-api-worker`) bound to D1
+3. **Route Worker on `/api/*`** under the same domain (`vital-core.site`) so frontend/admin can keep `API_BASE = "/api"`
+4. **Cloudflare Access policy** on `/admin*` and `/api/*` for trusted users
+
+### Worker + D1 quick steps
 
 ```bash
-cd vital-core-site
-./deploy.sh
+# in vital-core-api-worker
+wrangler d1 migrations apply vitalcore_db --remote
+wrangler deploy
 ```
+
+Then add a route so requests to `https://vital-core.site/api/*` hit the Worker.
+
+### Access policy notes
+
+- Protect **`/admin*`** and **mutating API methods** (`POST/PUT/DELETE /api/*`) for your identity only (or allowed team).
+- Keep **read endpoints** (`GET /api/products`, `GET /api/posts`) publicly reachable if you want dynamic public rendering.
+- If you protect all of `/api/*`, public pages will automatically fall back to static HTML cards/posts.
+
+### Why this works
+
+- Admin remains a single static file (`/admin/index.html`)
+- Public pages progressively hydrate from `/api` when available
+- If API fails/blocked, static fallback content still renders
 
 ## Security note
 
 - `dev_server.py` + `/admin` are intended for **local/LAN testing only**.
-- In production, the admin/API should be protected (e.g. **Cloudflare Access** in front of the real Worker API).
+- Use Cloudflare Access in production before exposing admin writes.
 
 ## Project structure (high level)
 
