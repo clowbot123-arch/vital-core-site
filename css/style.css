@@ -728,12 +728,18 @@ footer p:last-child {
 }
 
 .back-link,
-.legal-note {
+.legal-note,
+.u-backlink {
   margin-top: 28px;
   padding-top: 18px;
   border-top: 1px solid #e5e7eb;
   color: var(--text-light);
 }
+
+.u-media-block { width: 100%; border-collapse: collapse; margin: 22px 0; }
+.u-media-block th, .u-media-block td { padding: 10px 12px; border: 1px solid #e5e7eb; text-align: left; }
+.u-bg-header { background: #f3f4f6; }
+.u-bg-muted { background: #f9fafb; }
 
 .table-wrapper { overflow-x: auto; }
 
