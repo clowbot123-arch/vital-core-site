@@ -595,6 +595,17 @@ footer p:last-child {
     height: auto;
 }
 
+/* Legacy recipe/article image class used in several pages */
+.article-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+    margin: 10px 0 20px;
+    background: #e5e7eb;
+}
+
 /* Recipe Page */
 .recipe-detail {
     max-width: 900px;
@@ -703,4 +714,5 @@ footer p:last-child {
   .product-cta .btn{width:100%;}
   .nav-links{gap:12px;font-size:.94rem;flex-wrap:wrap;justify-content:flex-end;}
   .article-hero img,.recipe-hero img,.post-hero img{max-height:260px;}
+  .article-image{max-height:240px;}
 }
