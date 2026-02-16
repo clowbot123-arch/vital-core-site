@@ -34,3 +34,44 @@
 ### New pages
 - /en/blog/sunday-reset-routine-energy-after-40.html
 - /de/blog/sonntag-reset-routine-energie-ab-40.html
+
+
+## 2026-02-17 SEO Batch - Mega Longtail Expansion
+
+### Cluster: symptoms-after-40 (EN)
+- /en/blog/waking-up-at-3am-after-40.html
+- /en/blog/bloating-after-40-evening-meals.html
+- /en/blog/stiff-joints-morning-after-40.html
+- /en/blog/low-motivation-to-workout-after-40.html
+- /en/blog/poor-focus-after-lunch-after-40.html
+- /en/blog/restless-sleep-after-40.html
+- /en/blog/weekend-overeating-after-40.html
+- /en/blog/leg-heaviness-after-40-walking.html
+
+### Cluster: supplement-timing-use-case (EN)
+- /en/blog/vitamin-d3-k2-timing-after-40-immunity.html
+- /en/blog/collagen-timing-after-40-joints.html
+- /en/blog/coq10-timing-after-40-energy.html
+- /en/blog/probiotics-timing-after-40-digestion.html
+- /en/blog/curcumin-timing-after-40-joint-comfort.html
+- /en/blog/rhodiola-timing-after-40-focus.html
+- /en/blog/berberine-timing-after-40-glucose-support.html
+- /en/blog/l-theanine-timing-after-40-stress-focus.html
+
+### Cluster: recipe-for-goal-after-40 (EN)
+- /en/recipes/high-protein-late-breakfast-after-40.html
+- /en/recipes/fiber-rich-desk-lunch-after-40.html
+- /en/recipes/anti-bloat-sheet-pan-dinner-after-40.html
+- /en/recipes/post-walk-recovery-snack-after-40.html
+- /en/recipes/evening-craving-protein-pudding-after-40.html
+- /en/recipes/batch-cook-chili-fat-loss-after-40.html
+- /en/recipes/low-glycemic-breakfast-wrap-after-40.html
+- /en/recipes/sleep-friendly-turkey-rice-bowl-after-40.html
+
+### Priority DE pages
+- /de/blog/aufwachen-um-3-uhr-ab-40.html
+- /de/blog/unruhiger-schlaf-ab-40.html
+- /de/blog/coq10-einnahme-ab-40-energie.html
+- /de/blog/collagen-einnahme-ab-40-gelenke.html
+- /de/recipes/protein-spaetstueck-ab-40.html
+- /de/recipes/schlaf-freundliche-puten-reis-bowl-ab-40.html
