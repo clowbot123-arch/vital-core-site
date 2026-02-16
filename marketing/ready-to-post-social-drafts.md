@@ -69,3 +69,28 @@ https://www.vital-core.site/de/recipes/protein-chia-pudding.html
 Title: 7-Day High-Protein Breakfast Plan for Fat Loss Over 40
 Caption: Save this simple breakfast system for stable energy and fewer cravings. Includes a quick chia pudding meal-prep recipe.
 Link: https://www.vital-core.site/en/blog/high-protein-breakfast-weight-loss-over-40.html
+
+---
+
+## New Campaign: Sunday Reset Routine (EN + DE)
+
+**Twitter/X (EN):**
+If your energy crashes by Wednesday, don't "try harder" — reset your week on Sunday.
+
+This 60-minute routine sets meals, workouts, and sleep so weekdays feel easier.
+https://www.vital-core.site/en/blog/sunday-reset-routine-energy-after-40.html
+
+#EnergyAfter40 #HealthyAging #Habits
+
+**Twitter/X (DE):**
+Wenn deine Energie ab Mittwoch kippt: Starte mit einer 60-Minuten-Sonntag-Routine statt mehr Druck.
+
+Mahlzeiten, Training und Schlaf einmal planen — die Woche läuft leichter.
+https://www.vital-core.site/de/blog/sonntag-reset-routine-energie-ab-40.html
+
+#EnergieAb40 #GesundeRoutinen #HealthyAging
+
+**Pinterest Pin Idea (EN):**
+Title: Sunday Reset Routine for Energy After 40
+Caption: Save this weekly 60-minute reset to reduce stress and keep energy stable all week.
+Link: https://www.vital-core.site/en/blog/sunday-reset-routine-energy-after-40.html

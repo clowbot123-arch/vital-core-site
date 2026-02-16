@@ -28,3 +28,9 @@
 - /en/blog/protein-powder-timing-after-40-fat-loss.html
 - /en/blog/electrolyte-timing-after-40-endurance.html
 - /en/blog/ashwagandha-timing-after-40-stress.html
+
+## 2026-02-17 SEO Batch - Weekly Reset Routine
+
+### New pages
+- /en/blog/sunday-reset-routine-energy-after-40.html
+- /de/blog/sonntag-reset-routine-energie-ab-40.html
