@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500" role="img" aria-label="7-Day High-Protein Breakfast Plan for Over 40">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1500" fill="url(#bg)"/>
+  <rect x="70" y="90" width="860" height="1320" rx="36" fill="#ffffff" opacity="0.96"/>
+  <text x="120" y="220" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#1e3a8a">VITALCORE</text>
+  <text x="120" y="290" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="800" fill="#111827">7-Day High-Protein</text>
+  <text x="120" y="360" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="800" fill="#111827">Breakfast Plan</text>
+  <text x="120" y="420" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="600" fill="#374151">for Weight Loss Over 40</text>
+
+  <rect x="120" y="500" width="760" height="640" rx="24" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="155" y="565" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#1e40af">Daily target:</text>
+  <text x="155" y="615" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">• 30-40g protein at breakfast</text>
+  <text x="155" y="665" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">• Add fiber + berries</text>
+  <text x="155" y="715" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">• Prep 2-3 servings ahead</text>
+  <text x="155" y="785" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#1e40af">Includes:</text>
+  <text x="155" y="835" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">✓ 5-minute chia pudding recipe</text>
+  <text x="155" y="885" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">✓ Grocery list</text>
+  <text x="155" y="935" font-family="Arial, Helvetica, sans-serif" font-size="32" fill="#1f2937">✓ Busy weekday format</text>
+
+  <rect x="120" y="1210" width="760" height="120" rx="20" fill="#2563eb"/>
+  <text x="500" y="1285" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#ffffff">Read at vital-core.site</text>
+</svg>

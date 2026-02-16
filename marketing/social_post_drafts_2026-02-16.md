@@ -59,3 +59,33 @@ Simple guide:
 https://www.vital-core.site/blog/energy-boosting-foods.html
 
 What’s one habit that worked for you?
+
+---
+
+## 5) New Traffic Push: High-Protein Breakfast Plan (EN/DE)
+
+**X/Twitter (EN):**
+Want easier fat loss over 40? Start with breakfast.
+
+A consistent 30–40g protein breakfast can lower cravings and help preserve muscle while cutting.
+
+7-day framework + recipe:
+https://www.vital-core.site/en/blog/high-protein-breakfast-weight-loss-over-40.html
+https://www.vital-core.site/en/recipes/high-protein-chia-pudding.html
+
+#Over40 #WeightLoss #HighProtein
+
+**X/Twitter (DE):**
+Abnehmen ab 40 gelingt leichter mit einem klaren Frühstücks-Framework:
+30–40g Protein am Morgen = mehr Sättigung, weniger Snack-Attacken.
+
+7-Tage-Plan + Rezept:
+https://www.vital-core.site/de/blog/proteinreiches-fruehstueck-zum-abnehmen-ab-40.html
+https://www.vital-core.site/de/recipes/protein-chia-pudding.html
+
+#Abnehmen #Protein #Gesundheit
+
+**Pinterest (EN):**
+Title: 7-Day High-Protein Breakfast Plan for Women & Men 40+
+Description: Save this breakfast plan for steady energy and fewer cravings. Includes a 5-minute chia pudding meal-prep recipe.
+Link: https://www.vital-core.site/en/blog/high-protein-breakfast-weight-loss-over-40.html
