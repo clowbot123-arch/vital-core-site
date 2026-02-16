@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1500" viewBox="0 0 1000 1500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1500" fill="url(#bg)"/>
+  <rect x="70" y="70" width="860" height="1360" rx="28" fill="#ffffff" opacity="0.96"/>
+  <text x="500" y="220" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" fill="#0f172a">
+    7 Energy Habits
+  </text>
+  <text x="500" y="285" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#0f172a">
+    for Adults 40+
+  </text>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#1f2937" font-size="33">
+    <text x="130" y="420">✓ Consistent sleep schedule</text>
+    <text x="130" y="500">✓ Morning daylight + short walk</text>
+    <text x="130" y="580">✓ Protein-rich first meal</text>
+    <text x="130" y="660">✓ Stable lunch (no sugar crash)</text>
+    <text x="130" y="740">✓ Hydration before caffeine</text>
+    <text x="130" y="820">✓ Strength training 2–3x/week</text>
+    <text x="130" y="900">✓ Caffeine cut-off 8h before sleep</text>
+  </g>
+
+  <text x="500" y="1100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#334155">
+    Practical guide:
+  </text>
+  <text x="500" y="1145" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#0ea5e9">
+    vital-core.site/blog/energy-boosting-foods.html
+  </text>
+
+  <rect x="220" y="1240" width="560" height="88" rx="18" fill="#0ea5e9"/>
+  <text x="500" y="1295" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" fill="#ffffff">
+    Save for later
+  </text>
+</svg>
