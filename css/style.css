@@ -32,6 +32,21 @@ body {
     background: var(--light);
 }
 
+/* Global image safety net (prevents oversized renders on legacy pages) */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Keep potential logo images stable */
+.logo img,
+.navbar img {
+    width: auto;
+    height: auto;
+    max-height: 44px;
+}
+
 h1, h2, h3 {
     font-family: 'Playfair Display', serif;
 }
