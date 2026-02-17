@@ -209,3 +209,24 @@
 
 ### Social-ready asset
 - /marketing/social-fiber-intake-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - High-Intent Longtail + Social Pack
+
+### New pages
+- /en/blog/belly-fat-after-40-men-what-actually-works.html
+- /en/blog/perimenopause-weight-gain-after-40-what-to-do.html
+- /de/blog/bauchfett-ab-40-maenner-was-wirklich-hilft.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /de/blog/index.html
+- /en/blog/energy-after-40.html
+- /de/blog/energie-ab-40.html
+- /sitemap.xml
+
+### Pinterest + Quora assets
+- /marketing/pinterest-social-pack-en-2026-02-17.md
+- /marketing/quora-answer-drafts-en-2026-02-17.md
+- /marketing/pinterest-belly-fat-men-40-en.png
+- /marketing/pinterest-perimenopause-weight-40-en.png
+- /marketing/pinterest-energy-after-40-hub-en.png
