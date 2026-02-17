@@ -125,3 +125,34 @@ https://www.vital-core.site/en/blog/slow-metabolism-after-40.html
 Title: Slow Metabolism After 40? Try This 14-Day Reset
 Caption: Save this no-fluff system for better fat loss, fewer cravings, and steadier energy after 40.
 Link: https://www.vital-core.site/en/blog/slow-metabolism-after-40.html
+
+---
+
+## New Campaign: Evening Walk for Weight Loss After 40 (EN)
+
+**Twitter/X (EN):**
+If fat loss after 40 feels harder than it should, try this first:
+
+30 minutes of evening walking, 4-6 days/week.
+Lower stress, fewer late-night cravings, better sleep.
+
+Simple plan:
+https://www.vital-core.site/en/blog/evening-walk-for-weight-loss-after-40.html
+
+#WeightLossAfter40 #WalkingForFatLoss #HealthyAging
+
+**LinkedIn (EN):**
+For adults 40+, consistency beats intensity.
+
+A structured evening walk can improve:
+- daily energy expenditure
+- appetite regulation
+- sleep quality and next-day training readiness
+
+We put together a practical 30-minute template here:
+https://www.vital-core.site/en/blog/evening-walk-for-weight-loss-after-40.html
+
+**Pinterest Pin Idea (EN):**
+Title: Evening Walk Plan for Weight Loss After 40
+Caption: Save this 30-minute evening walking framework to reduce cravings and improve sleep while losing fat.
+Link: https://www.vital-core.site/en/blog/evening-walk-for-weight-loss-after-40.html

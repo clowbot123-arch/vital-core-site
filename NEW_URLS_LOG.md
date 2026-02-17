@@ -94,3 +94,11 @@
 - /de/blog/energie-ab-40.html
 - /en/blog/index.html
 - /de/blog/index.html
+
+## 2026-02-17 SEO Batch - Evening Walk Fat-Loss Longtail
+
+### New page
+- /en/blog/evening-walk-for-weight-loss-after-40.html
+
+### Internal-link updates
+- /en/blog/index.html
