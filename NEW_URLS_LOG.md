@@ -170,3 +170,16 @@
 
 ### Social-ready asset
 - /marketing/social-steps-per-day-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Creatine Dosage Longtail
+
+### New page
+- /en/blog/creatine-dosage-after-40.html
+
+### Internal-link updates
+- /en/blog/creatine-timing-after-40-strength.html
+- /en/blog/index.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-creatine-dosage-after-40-2026-02-17.md
