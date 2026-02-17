@@ -144,3 +144,16 @@
 
 ### Social-ready asset
 - /marketing/social-late-night-snacking-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Zone 2 Cardio Longtail
+
+### New page
+- /en/blog/zone-2-cardio-after-40-fat-loss.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/evening-walk-for-weight-loss-after-40.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-zone-2-cardio-after-40-2026-02-17.md
