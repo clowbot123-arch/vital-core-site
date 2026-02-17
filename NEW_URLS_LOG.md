@@ -196,3 +196,16 @@
 
 ### Social-ready asset
 - /marketing/social-coffee-timing-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Fiber Intake Longtail
+
+### New page
+- /en/blog/fiber-intake-after-40-fat-loss.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/protein-intake-after-40-how-much-per-day.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-fiber-intake-after-40-2026-02-17.md
