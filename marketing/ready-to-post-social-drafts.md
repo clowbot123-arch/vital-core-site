@@ -94,3 +94,34 @@ https://www.vital-core.site/de/blog/sonntag-reset-routine-energie-ab-40.html
 Title: Sunday Reset Routine for Energy After 40
 Caption: Save this weekly 60-minute reset to reduce stress and keep energy stable all week.
 Link: https://www.vital-core.site/en/blog/sunday-reset-routine-energy-after-40.html
+
+---
+
+## New Campaign: Slow Metabolism After 40 (EN)
+
+**Twitter/X (EN):**
+If your "metabolism feels broken" after 40, start here:
+
+Lift 3x/week + protein at each meal + 8k steps + consistent sleep.
+
+No extremes. Just a system you can repeat.
+https://www.vital-core.site/en/blog/slow-metabolism-after-40.html
+
+#MetabolismAfter40 #FatLoss #HealthyAging #StrengthTraining
+
+**LinkedIn (EN):**
+Many adults 40+ assume fat loss is purely about eating less.
+
+In practice, the highest leverage is behavior architecture:
+- preserve muscle with strength training
+- distribute protein across meals
+- raise daily movement (NEAT)
+- tighten sleep regularity
+
+We summarized a practical 14-day reset here:
+https://www.vital-core.site/en/blog/slow-metabolism-after-40.html
+
+**Pinterest Pin Idea (EN):**
+Title: Slow Metabolism After 40? Try This 14-Day Reset
+Caption: Save this no-fluff system for better fat loss, fewer cravings, and steadier energy after 40.
+Link: https://www.vital-core.site/en/blog/slow-metabolism-after-40.html

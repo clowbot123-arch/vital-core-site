@@ -75,3 +75,8 @@
 - /de/blog/collagen-einnahme-ab-40-gelenke.html
 - /de/recipes/protein-spaetstueck-ab-40.html
 - /de/recipes/schlaf-freundliche-puten-reis-bowl-ab-40.html
+
+## 2026-02-17 SEO Batch - Metabolism Longtail
+
+### New page
+- /en/blog/slow-metabolism-after-40.html
