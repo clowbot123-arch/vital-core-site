@@ -274,3 +274,16 @@
 
 ### Social-ready asset
 - /marketing/social-visceral-fat-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Intermittent Fasting Belly-Fat Longtail
+
+### New page
+- /en/blog/intermittent-fasting-after-40-for-belly-fat.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/belly-fat-after-40-men-what-actually-works.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-intermittent-fasting-after-40-2026-02-17.md
