@@ -183,3 +183,16 @@
 
 ### Social-ready asset
 - /marketing/social-creatine-dosage-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Coffee Timing Longtail
+
+### New page
+- /en/blog/best-time-to-drink-coffee-after-waking-40.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/morning-fatigue-after-40.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-coffee-timing-after-40-2026-02-17.md
