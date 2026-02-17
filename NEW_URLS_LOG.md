@@ -260,3 +260,17 @@
 
 ### Social-ready asset
 - /marketing/social-weight-loss-plateau-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Visceral Fat Longtail
+
+### New page
+- /en/blog/how-to-lose-visceral-fat-after-40.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/weight-loss-plateau-after-40.html
+- /en/blog/belly-fat-after-40-men-what-actually-works.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-visceral-fat-after-40-2026-02-17.md
