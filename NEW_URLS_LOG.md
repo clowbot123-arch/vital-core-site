@@ -296,3 +296,17 @@
 
 ### Social-ready asset
 - /marketing/social-best-time-to-workout-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Morning vs Evening Workout Timing (EN+DE)
+
+### New pages
+- /en/blog/morning-vs-evening-workout-after-40-fat-loss-performance.html
+- /de/blog/morgens-oder-abends-trainieren-ab-40-fettabbau-leistung.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /de/blog/index.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-morning-vs-evening-workout-after-40-2026-02-17.md
