@@ -282,3 +282,17 @@
 
 ### Social-ready asset
 - /marketing/social-bedtime-snack-blood-sugar-after-40-2026-02-17.md
+
+
+## 2026-02-17 SEO Batch - Workout Timing Longtail
+
+### New page
+- /en/blog/best-time-to-workout-after-40-for-fat-loss.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/energy-after-40.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-best-time-to-workout-after-40-2026-02-17.md
