@@ -102,3 +102,16 @@
 
 ### Internal-link updates
 - /en/blog/index.html
+
+## 2026-02-17 SEO Batch - Protein Intake Calculator Longtail
+
+### New page
+- /en/blog/protein-intake-after-40-how-much-per-day.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/index.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-protein-intake-after-40-2026-02-17.md
