@@ -157,3 +157,16 @@
 
 ### Social-ready asset
 - /marketing/social-zone-2-cardio-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Daily Steps Longtail
+
+### New page
+- /en/blog/steps-per-day-after-40-fat-loss.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/zone-2-cardio-after-40-fat-loss.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-steps-per-day-after-40-2026-02-17.md
