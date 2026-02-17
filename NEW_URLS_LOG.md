@@ -220,18 +220,13 @@
 ### Internal-link updates
 - /en/blog/index.html
 - /de/blog/index.html
-- /en/blog/energy-after-40.html
-- /de/blog/energie-ab-40.html
 - /sitemap.xml
 
-### Pinterest + Quora assets
-- /marketing/pinterest-social-pack-en-2026-02-17.md
-- /marketing/quora-answer-drafts-en-2026-02-17.md
-- /marketing/pinterest-belly-fat-men-40-en.png
-- /marketing/pinterest-perimenopause-weight-40-en.png
-- /marketing/pinterest-energy-after-40-hub-en.png
+### Social-ready assets
+- /marketing/social-belly-fat-men-after-40-2026-02-17.md
+- /marketing/social-perimenopause-weight-gain-after-40-2026-02-17.md
 
-## 2026-02-17 SEO Batch - ACV Timing Longtail
+## 2026-02-17 SEO Batch - ACV Timing Longtail (EN+DE)
 
 ### New pages
 - /en/blog/apple-cider-vinegar-timing-after-40-weight-loss.html
@@ -242,10 +237,11 @@
 - /de/blog/index.html
 - /sitemap.xml
 
-### Social-ready asset
+### Social-ready assets
 - /marketing/social-acv-timing-after-40-2026-02-17.md
+- /marketing/social-apfelessig-ab-40-2026-02-17.md
 
-## 2026-02-17 SEO Batch - Weight Loss Plateau Longtail (EN/DE)
+## 2026-02-17 SEO Batch - Weight-Loss Plateau Longtail (EN+DE)
 
 ### New pages
 - /en/blog/weight-loss-plateau-after-40.html
@@ -254,30 +250,15 @@
 ### Internal-link updates
 - /en/blog/index.html
 - /de/blog/index.html
-- /en/blog/perimenopause-weight-gain-after-40-what-to-do.html
-- /de/blog/bauchfett-ab-40-maenner-was-wirklich-hilft.html
 - /sitemap.xml
 
 ### Social-ready asset
 - /marketing/social-weight-loss-plateau-after-40-2026-02-17.md
 
-## 2026-02-17 SEO Batch - Visceral Fat Longtail
+## 2026-02-17 SEO Batch - Visceral Fat + IF Longtail
 
-### New page
+### New pages
 - /en/blog/how-to-lose-visceral-fat-after-40.html
-
-### Internal-link updates
-- /en/blog/index.html
-- /en/blog/weight-loss-plateau-after-40.html
-- /en/blog/belly-fat-after-40-men-what-actually-works.html
-- /sitemap.xml
-
-### Social-ready asset
-- /marketing/social-visceral-fat-after-40-2026-02-17.md
-
-## 2026-02-17 SEO Batch - Intermittent Fasting Belly-Fat Longtail
-
-### New page
 - /en/blog/intermittent-fasting-after-40-for-belly-fat.html
 
 ### Internal-link updates
@@ -285,5 +266,19 @@
 - /en/blog/belly-fat-after-40-men-what-actually-works.html
 - /sitemap.xml
 
-### Social-ready asset
+### Social-ready assets
+- /marketing/social-visceral-fat-after-40-2026-02-17.md
 - /marketing/social-intermittent-fasting-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Bedtime Snack Blood Sugar Longtail
+
+### New page
+- /en/blog/best-bedtime-snack-blood-sugar-after-40.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/sugar-cravings-after-40-evening.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-bedtime-snack-blood-sugar-after-40-2026-02-17.md
