@@ -230,3 +230,17 @@
 - /marketing/pinterest-belly-fat-men-40-en.png
 - /marketing/pinterest-perimenopause-weight-40-en.png
 - /marketing/pinterest-energy-after-40-hub-en.png
+
+## 2026-02-17 SEO Batch - ACV Timing Longtail
+
+### New pages
+- /en/blog/apple-cider-vinegar-timing-after-40-weight-loss.html
+- /de/blog/apfelessig-einnahme-ab-40-abnehmen.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /de/blog/index.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-acv-timing-after-40-2026-02-17.md
