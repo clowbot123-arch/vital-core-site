@@ -80,3 +80,17 @@
 
 ### New page
 - /en/blog/slow-metabolism-after-40.html
+
+## 2026-02-17 SEO Batch - DE Metabolism + Insulin Cluster
+
+### New pages
+- /de/blog/langsamer-stoffwechsel-ab-40.html
+- /en/blog/insulin-resistance-signs-after-40.html
+- /de/blog/insulinresistenz-anzeichen-ab-40.html
+
+### Internal-link updates
+- /en/blog/slow-metabolism-after-40.html
+- /en/blog/energy-after-40.html
+- /de/blog/energie-ab-40.html
+- /en/blog/index.html
+- /de/blog/index.html
