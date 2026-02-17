@@ -130,3 +130,17 @@
 ### Social-ready asset
 - /marketing/social-carb-timing-after-40-2026-02-17.md
 
+
+
+## 2026-02-17 SEO Batch - Late-Night Snacking Longtail
+
+### New page
+- /en/blog/late-night-snacking-after-40.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /en/blog/sugar-cravings-after-40-evening.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-late-night-snacking-after-40-2026-02-17.md
