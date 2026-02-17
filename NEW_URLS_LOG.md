@@ -244,3 +244,19 @@
 
 ### Social-ready asset
 - /marketing/social-acv-timing-after-40-2026-02-17.md
+
+## 2026-02-17 SEO Batch - Weight Loss Plateau Longtail (EN/DE)
+
+### New pages
+- /en/blog/weight-loss-plateau-after-40.html
+- /de/blog/abnehmplateau-ab-40-loesen.html
+
+### Internal-link updates
+- /en/blog/index.html
+- /de/blog/index.html
+- /en/blog/perimenopause-weight-gain-after-40-what-to-do.html
+- /de/blog/bauchfett-ab-40-maenner-was-wirklich-hilft.html
+- /sitemap.xml
+
+### Social-ready asset
+- /marketing/social-weight-loss-plateau-after-40-2026-02-17.md
